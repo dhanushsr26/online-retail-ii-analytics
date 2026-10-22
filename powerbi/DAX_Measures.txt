@@ -1,0 +1,471 @@
+================================================================================
+DAX MEASURES - Online Retail II dashboard
+Business Analytics project, M.Sc Semester 3
+================================================================================
+
+HOW TO USE
+----------
+Create a blank table to hold the measures so they do not clutter the fact table:
+    Home > Enter data > name it "_Measures" > one dummy column > Load
+    then hide the dummy column.
+
+For each measure below: Home > New measure, paste, Enter.
+Comments starting with // can be pasted along with the code.
+
+Numbers to expect on an unfiltered page - if these do not match, the model is
+wrong, not the measure. Every figure below was computed from the cleaned fact
+table, not estimated:
+
+    [Total Revenue]           GBP 18,854,778.33
+    [Gross Revenue]           GBP 20,316,806.44
+    [Return Revenue]          GBP  1,462,401.68
+    [Guest Revenue]           GBP  2,565,542.41   (13.6% of total)
+    [Outlier Revenue]         GBP    401,840.79   (2.1% of total)
+    [Total Orders]                     49,337
+    [Total Customers]                   5,940     (excludes the -1 guest key)
+    [Units Sold]                   10,483,663
+    [Total Lines]                   1,028,743
+    [Average Order Value]     GBP        382.16
+
+Note Gross Revenue (20.3m) exceeds Total Revenue (18.9m) - the difference is the
+1.46m of returns netted off. That is not an error; it is the point of keeping
+the two measures separate.
+
+
+================================================================================
+0. REQUIRED CALCULATED COLUMN
+================================================================================
+Fact_Sales[InvoiceDate] is a datetime. A datetime will not match a date-only key,
+so the relationship to Dim_Date must run through this column.
+
+    New column on Fact_Sales:
+
+DateOnly = DATEVALUE ( Fact_Sales[InvoiceDate] )
+
+    Then: Model view > relate Dim_Date[DateKey] 1 --> * Fact_Sales[DateOnly]
+    Then: Table tools > Mark as date table > Dim_Date > DateKey
+
+
+================================================================================
+1. CORE MEASURES
+================================================================================
+
+// Everything the business actually took, returns and cancellations netted off.
+// This is the headline number and the one that must reconcile to Python.
+Total Revenue =
+SUM ( Fact_Sales[Revenue] )
+
+
+// Sales only - what went out of the door before anything came back.
+Gross Revenue =
+CALCULATE (
+    [Total Revenue],
+    Fact_Sales[TransactionType] = "Sale"
+)
+
+
+// Money handed back. Negative by construction, so it is negated for display.
+Return Revenue =
+- CALCULATE (
+    [Total Revenue],
+    Fact_Sales[Quantity] < 0
+)
+
+
+// Invoices, not lines. A basket of 30 items is one order.
+Total Orders =
+DISTINCTCOUNT ( Fact_Sales[Invoice] )
+
+
+// The -1 key is the guest sentinel, not a person, so it is excluded.
+Total Customers =
+CALCULATE (
+    DISTINCTCOUNT ( Fact_Sales[CustomerKey] ),
+    Fact_Sales[CustomerKey] <> -1
+)
+
+
+Units Sold =
+SUM ( Fact_Sales[Quantity] )
+
+
+Total Lines =
+COUNTROWS ( Fact_Sales )
+
+
+// DIVIDE, never "/", so an empty filter context returns blank instead of an error.
+Average Order Value =
+DIVIDE ( [Total Revenue], [Total Orders] )
+
+
+Revenue per Customer =
+DIVIDE ( [Total Revenue], [Total Customers] )
+
+
+Average Basket Size =
+DIVIDE ( [Units Sold], [Total Orders] )
+
+
+================================================================================
+2. RETURNS AND QUALITY OF SALE
+================================================================================
+The PDF builds Defect % = Defective / Produced x 100. Return Rate % is the same
+shape: what fraction of what we sold came back.
+
+Return Rate % =
+DIVIDE ( [Return Revenue], [Gross Revenue] ) * 100
+
+
+Cancelled Orders =
+CALCULATE (
+    DISTINCTCOUNT ( Fact_Sales[Invoice] ),
+    Fact_Sales[IsCancelled] = TRUE ()
+)
+
+
+Cancellation Rate % =
+DIVIDE ( [Cancelled Orders], [Total Orders] ) * 100
+
+
+Returned Units =
+- CALCULATE ( SUM ( Fact_Sales[Quantity] ), Fact_Sales[Quantity] < 0 )
+
+
+================================================================================
+3. TIME INTELLIGENCE
+================================================================================
+All of these need Dim_Date marked as the date table.
+
+Revenue LY =
+CALCULATE ( [Total Revenue], SAMEPERIODLASTYEAR ( Dim_Date[DateKey] ) )
+
+
+Revenue YoY =
+VAR Current = [Total Revenue]
+VAR Prior = [Revenue LY]
+RETURN
+    IF ( NOT ISBLANK ( Prior ), Current - Prior )
+
+
+// Guarded: without the ISBLANK check the first year shows a meaningless 100%.
+Revenue YoY % =
+VAR Prior = [Revenue LY]
+RETURN
+    IF ( NOT ISBLANK ( Prior ), DIVIDE ( [Total Revenue] - Prior, Prior ) * 100 )
+
+
+Revenue YTD =
+TOTALYTD ( [Total Revenue], Dim_Date[DateKey] )
+
+
+Revenue MTD =
+TOTALMTD ( [Total Revenue], Dim_Date[DateKey] )
+
+
+Revenue QTD =
+TOTALQTD ( [Total Revenue], Dim_Date[DateKey] )
+
+
+Revenue Rolling 12M =
+CALCULATE (
+    [Total Revenue],
+    DATESINPERIOD ( Dim_Date[DateKey], MAX ( Dim_Date[DateKey] ), -12, MONTH )
+)
+
+
+================================================================================
+4. NOISE REDUCTION  (PDF: Noise Reduction)
+================================================================================
+Daily revenue is spiky. These are the PDF's smoothing techniques applied to the
+real series, and they are what the Executive Overview trend chart plots against
+raw daily revenue.
+
+// n-point moving average, n = 7. Cheap and exact.
+Revenue 7D Moving Average =
+AVERAGEX (
+    DATESINPERIOD ( Dim_Date[DateKey], MAX ( Dim_Date[DateKey] ), -7, DAY ),
+    [Total Revenue]
+)
+
+
+Revenue 30D Moving Average =
+AVERAGEX (
+    DATESINPERIOD ( Dim_Date[DateKey], MAX ( Dim_Date[DateKey] ), -30, DAY ),
+    [Total Revenue]
+)
+
+
+// Exponential smoothing: New = a x Actual + (1-a) x Previous.
+// That definition is recursive, and DAX has no recursion - so the shipped
+// dashboard reads the column Python already computed:
+//     Agg_Daily[Revenue_ExpSmooth]     alpha = 0.3
+// Use that column directly in the trend visual.
+Revenue Exp Smoothed (from Agg_Daily) =
+SUM ( Agg_Daily[Revenue_ExpSmooth] )
+
+
+// Reference only. The recursion has a closed form - each past day contributes
+// a x (1-a)^k - so it CAN be written in DAX. It is O(n^2) over 604 days and
+// noticeably slow; it is here to show the equivalence, not to be used.
+Revenue Exp Smoothed (pure DAX) =
+VAR Alpha = 0.3
+VAR CurrentDay = MAX ( Dim_Date[DateKey] )
+RETURN
+    SUMX (
+        FILTER ( ALL ( Dim_Date ), Dim_Date[DateKey] <= CurrentDay ),
+        VAR K = DATEDIFF ( Dim_Date[DateKey], CurrentDay, DAY )
+        RETURN Alpha * POWER ( 1 - Alpha, K ) * CALCULATE ( [Total Revenue] )
+    )
+
+
+================================================================================
+5. CUSTOMER MEASURES
+================================================================================
+
+// A customer is "new" in the month their first-ever purchase falls.
+New Customers =
+VAR PeriodEnd = MAX ( Dim_Date[DateKey] )
+VAR PeriodStart = MIN ( Dim_Date[DateKey] )
+RETURN
+    CALCULATE (
+        COUNTROWS ( Dim_Customer ),
+        FILTER (
+            ALL ( Dim_Customer ),
+            Dim_Customer[FirstPurchase] >= PeriodStart
+                && Dim_Customer[FirstPurchase] <= PeriodEnd
+                && Dim_Customer[CustomerKey] <> -1
+        )
+    )
+
+
+Returning Customers =
+[Total Customers] - [New Customers]
+
+
+Revenue from New Customers =
+VAR PeriodStart = MIN ( Dim_Date[DateKey] )
+VAR PeriodEnd = MAX ( Dim_Date[DateKey] )
+VAR NewOnes =
+    FILTER (
+        ALL ( Dim_Customer ),
+        Dim_Customer[FirstPurchase] >= PeriodStart
+            && Dim_Customer[FirstPurchase] <= PeriodEnd
+    )
+RETURN
+    CALCULATE ( [Total Revenue], KEEPFILTERS ( NewOnes ) )
+
+
+// Share of revenue that cannot be attributed to a known customer.
+// This is the dual-grain decision made visible: 22% of rows, 14% of revenue.
+Guest Revenue =
+CALCULATE ( [Total Revenue], Fact_Sales[CustomerKey] = -1 )
+
+
+Guest Revenue % =
+DIVIDE ( [Guest Revenue], [Total Revenue] ) * 100
+
+
+Identified Revenue % =
+100 - [Guest Revenue %]
+
+
+Average Customer Lifetime Value =
+AVERAGEX ( VALUES ( Dim_Customer[CustomerKey] ), Dim_Customer[Monetary] )
+
+
+Average Recency (days) =
+AVERAGEX (
+    FILTER ( Dim_Customer, NOT ISBLANK ( Dim_Customer[Recency] ) ),
+    Dim_Customer[Recency]
+)
+
+
+Average Frequency =
+AVERAGEX (
+    FILTER ( Dim_Customer, NOT ISBLANK ( Dim_Customer[Frequency] ) ),
+    Dim_Customer[Frequency]
+)
+
+
+// Pareto: cumulative share of revenue as customers are ranked best to worst.
+// Plot against customer rank to test whether 80/20 actually holds here.
+Cumulative Revenue % (Customers) =
+VAR CurrentRevenue = [Total Revenue]
+VAR AllCustomers =
+    CALCULATETABLE (
+        ADDCOLUMNS ( VALUES ( Dim_Customer[CustomerKey] ), "@rev", [Total Revenue] ),
+        ALLSELECTED ( Dim_Customer )
+    )
+VAR RankedAbove = FILTER ( AllCustomers, [@rev] >= CurrentRevenue )
+VAR Total = SUMX ( AllCustomers, [@rev] )
+RETURN
+    DIVIDE ( SUMX ( RankedAbove, [@rev] ), Total ) * 100
+
+
+Segment Revenue % =
+DIVIDE (
+    [Total Revenue],
+    CALCULATE ( [Total Revenue], ALLSELECTED ( Dim_Customer[Segment] ) )
+) * 100
+
+
+================================================================================
+6. PRODUCT MEASURES
+================================================================================
+
+Products Sold =
+DISTINCTCOUNT ( Fact_Sales[StockCode] )
+
+
+Revenue per Product =
+DIVIDE ( [Total Revenue], [Products Sold] )
+
+
+// Share of revenue coming from class-A products. Tests the 80/20 claim on the
+// product side rather than the customer side.
+Class A Revenue % =
+DIVIDE (
+    CALCULATE ( [Total Revenue], Dim_Product[ABC_Class] = "A" ),
+    CALCULATE ( [Total Revenue], ALL ( Dim_Product[ABC_Class] ) )
+) * 100
+
+
+Product Return Rate % =
+DIVIDE (
+    - CALCULATE ( SUM ( Fact_Sales[Quantity] ), Fact_Sales[Quantity] < 0 ),
+    CALCULATE ( SUM ( Fact_Sales[Quantity] ), Fact_Sales[Quantity] > 0 )
+) * 100
+
+
+// Non-product revenue: postage, bank charges, Amazon fees, manual adjustments.
+// Small row counts, large swings - they distort any average that includes them.
+Non-Product Revenue =
+CALCULATE ( [Total Revenue], Fact_Sales[IsProduct] = FALSE () )
+
+
+================================================================================
+7. DATA QUALITY MEASURES  (the Data Quality page)
+================================================================================
+
+Rows Retained =
+COUNTROWS ( Fact_Sales )
+
+
+Rows Removed (total) =
+SUM ( Dim_DataQuality[Rows_Removed] )
+
+
+// 1,067,371 raw rows is a constant of the source file, not a model value,
+// so it is stated rather than computed.
+Rows in Raw Source =
+1067371
+
+
+Data Retention % =
+DIVIDE ( [Rows Retained], [Rows in Raw Source] ) * 100
+
+
+Outlier Rows =
+CALCULATE ( COUNTROWS ( Fact_Sales ), Fact_Sales[Is_Outlier] = TRUE () )
+
+
+Outlier Revenue =
+CALCULATE ( [Total Revenue], Fact_Sales[Is_Outlier] = TRUE () )
+
+
+// How much of the headline number rests on 1,751 extreme rows. If this is
+// large, every average on the dashboard needs reading with care.
+Outlier Revenue Share % =
+DIVIDE ( [Outlier Revenue], [Total Revenue] ) * 100
+
+
+Revenue excluding Outliers =
+CALCULATE ( [Total Revenue], Fact_Sales[Is_Outlier] = FALSE () )
+
+
+Rows Missing Customer =
+CALCULATE ( COUNTROWS ( Fact_Sales ), Fact_Sales[CustomerKey] = -1 )
+
+
+Customer Completeness % =
+DIVIDE (
+    COUNTROWS ( Fact_Sales ) - [Rows Missing Customer],
+    COUNTROWS ( Fact_Sales )
+) * 100
+
+
+Techniques Applied =
+DISTINCTCOUNT ( Dim_DataQuality[PDF_Section] )
+
+
+// Waterfall support: only genuine row filters may appear as deletions.
+// Derivation, schema and aggregation steps leave Rows_Before/After blank on
+// purpose, so charting them would otherwise claim we deleted a million rows
+// in order to build a 604-row daily summary.
+Rows Removed (filters only) =
+CALCULATE (
+    SUM ( Dim_DataQuality[Rows_Removed] ),
+    Dim_DataQuality[Step_Type] = "Row filter"
+)
+
+
+================================================================================
+8. DYNAMIC TITLES AND LABELS
+================================================================================
+Put these in a card, or in a visual's Title > fx > Field value, so headings
+respond to the slicers instead of lying about what is on screen.
+
+Selected Period Label =
+VAR MinD = MIN ( Dim_Date[DateKey] )
+VAR MaxD = MAX ( Dim_Date[DateKey] )
+RETURN
+    FORMAT ( MinD, "d MMM yyyy" ) & " to " & FORMAT ( MaxD, "d MMM yyyy" )
+
+
+Revenue Headline =
+"Revenue " & FORMAT ( [Total Revenue], "#,0,,.0M" ) & " GBP"
+
+
+YoY Arrow =
+VAR Pct = [Revenue YoY %]
+RETURN
+    IF (
+        ISBLANK ( Pct ),
+        "no prior year",
+        IF ( Pct >= 0, UNICHAR ( 9650 ) & " ", UNICHAR ( 9660 ) & " " )
+            & FORMAT ( ABS ( Pct ), "0.0" ) & "% vs LY"
+    )
+
+
+================================================================================
+9. FORMATTING
+================================================================================
+Set these on the measure (Measure tools > Format), not per visual, so every
+visual inherits them.
+
+    Total Revenue, Gross Revenue, Return Revenue,
+    Average Order Value, Revenue per Customer,
+    Guest Revenue, Outlier Revenue, Non-Product Revenue
+        Currency, GBP, 0 decimals   (2 decimals only on the reconciliation card)
+
+    Revenue YoY %, Return Rate %, Cancellation Rate %,
+    Guest Revenue %, Data Retention %, Outlier Revenue Share %,
+    Customer Completeness %, Class A Revenue %, Segment Revenue %
+        Decimal number, 1 decimal, suffix %
+
+    Total Orders, Total Customers, Units Sold, Total Lines,
+    Rows Retained, Rows Removed (total), Outlier Rows
+        Whole number, thousands separator
+
+    Average Recency (days)      Whole number
+    Average Frequency           Decimal, 1 place
+
+
+================================================================================
+10. WHY DIVIDE AND NOT "/"
+================================================================================
+Worth being able to answer if the examiner asks. "/" raises an error on a
+divide-by-zero and the whole visual goes red; DIVIDE returns BLANK, which a
+visual renders as an empty cell. On this dataset it matters: filter to a country
+with only cancellations and [Gross Revenue] is 0, so Return Rate % would break
+on every "/" in section 2.

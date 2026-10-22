@@ -1,0 +1,477 @@
+{
+  "config": "{\"version\":\"5.54\",\"themeCollection\":{},\"activeSectionIndex\":1,\"linguisticSchemaSyncVersion\":2,\"objects\":{\"outspacePane\":[{\"properties\":{\"expanded\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}]}}",
+  "layoutOptimization": 0,
+  "report": {},
+  "sections": [
+    {
+      "config": "{}",
+      "displayName": "Customer Intelligence",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "ReportSectionCustomers",
+      "ordinal": 1,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"txt0014\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":12,\"z\":0,\"width\":900,\"height\":44,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"textbox\",\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"paragraphs\":[{\"textRuns\":[{\"value\":\"Customer Intelligence - RFM Segments and CRM Strategy\",\"textStyle\":{\"fontSize\":\"18pt\",\"color\":\"#1B2A36\",\"fontWeight\":\"bold\"}}]}]}}]}}}",
+          "filters": "[]",
+          "height": 44.00,
+          "width": 900.00,
+          "x": 20.00,
+          "y": 12.00,
+          "z": 0.00
+        },
+        {
+          "config": "{\"name\":\"v0015\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":64,\"z\":1000,\"width\":193,\"height\":96,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Total Customers\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Customers\"},\"Name\":\"_Measures.Total Customers\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Customers'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 20.00,
+          "y": 64.00,
+          "z": 1000.00
+        },
+        {
+          "config": "{\"name\":\"v0016\",\"layouts\":[{\"id\":0,\"position\":{\"x\":225,\"y\":64,\"z\":2000,\"width\":193,\"height\":96,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Average CLV\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Average CLV\"},\"Name\":\"_Measures.Average CLV\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Avg lifetime value'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 225.00,
+          "y": 64.00,
+          "z": 2000.00
+        },
+        {
+          "config": "{\"name\":\"v0017\",\"layouts\":[{\"id\":0,\"position\":{\"x\":430,\"y\":64,\"z\":3000,\"width\":193,\"height\":96,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Churn Rate %\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Churn Rate %\"},\"Name\":\"_Measures.Churn Rate %\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Churn rate'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 430.00,
+          "y": 64.00,
+          "z": 3000.00
+        },
+        {
+          "config": "{\"name\":\"v0018\",\"layouts\":[{\"id\":0,\"position\":{\"x\":635,\"y\":64,\"z\":4000,\"width\":193,\"height\":96,\"tabOrder\":4000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Retention Rate %\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Retention Rate %\"},\"Name\":\"_Measures.Retention Rate %\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Retention rate'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 635.00,
+          "y": 64.00,
+          "z": 4000.00
+        },
+        {
+          "config": "{\"name\":\"v0019\",\"layouts\":[{\"id\":0,\"position\":{\"x\":840,\"y\":64,\"z\":5000,\"width\":193,\"height\":96,\"tabOrder\":5000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Purchase Frequency per Year\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Purchase Frequency per Year\"},\"Name\":\"_Measures.Purchase Frequency per Year\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Orders per year'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 840.00,
+          "y": 64.00,
+          "z": 5000.00
+        },
+        {
+          "config": "{\"name\":\"v0020\",\"layouts\":[{\"id\":0,\"position\":{\"x\":1045,\"y\":64,\"z\":6000,\"width\":193,\"height\":96,\"tabOrder\":6000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Guest Revenue %\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Guest Revenue %\"},\"Name\":\"_Measures.Guest Revenue %\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Unidentified revenue'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 1045.00,
+          "y": 64.00,
+          "z": 6000.00
+        },
+        {
+          "config": "{\"name\":\"v0021\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":176,\"z\":7000,\"width\":496,\"height\":250,\"tabOrder\":7000}}],\"singleVisual\":{\"visualType\":\"treemap\",\"projections\":{\"Group\":[{\"queryRef\":\"Dim_Customer.Segment\",\"active\":true}],\"Values\":[{\"queryRef\":\"_Measures.Total Revenue\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"dim14\",\"Entity\":\"Dim_Customer\",\"Type\":0},{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim14\"}},\"Property\":\"Segment\"},\"Name\":\"Dim_Customer.Segment\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"},\"Name\":\"_Measures.Total Revenue\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Revenue by RFM segment'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 250.00,
+          "width": 496.00,
+          "x": 20.00,
+          "y": 176.00,
+          "z": 7000.00
+        },
+        {
+          "config": "{\"name\":\"v0022\",\"layouts\":[{\"id\":0,\"position\":{\"x\":528,\"y\":176,\"z\":8000,\"width\":456,\"height\":250,\"tabOrder\":8000}}],\"singleVisual\":{\"visualType\":\"clusteredBarChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Dim_Customer.CRM_Strategy\",\"active\":true}],\"Y\":[{\"queryRef\":\"_Measures.Total Customers\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"dim14\",\"Entity\":\"Dim_Customer\",\"Type\":0},{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim14\"}},\"Property\":\"CRM_Strategy\"},\"Name\":\"Dim_Customer.CRM_Strategy\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Customers\"},\"Name\":\"_Measures.Total Customers\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Customers\"}}}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Customers by CRM strategy (BA-2)'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 250.00,
+          "width": 456.00,
+          "x": 528.00,
+          "y": 176.00,
+          "z": 8000.00
+        },
+        {
+          "config": "{\"name\":\"v0023\",\"layouts\":[{\"id\":0,\"position\":{\"x\":996,\"y\":176,\"z\":9000,\"width\":264,\"height\":250,\"tabOrder\":9000}}],\"singleVisual\":{\"visualType\":\"donutChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Dim_Customer.ChurnStatus\",\"active\":true}],\"Y\":[{\"queryRef\":\"_Measures.Total Customers\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"dim14\",\"Entity\":\"Dim_Customer\",\"Type\":0},{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim14\"}},\"Property\":\"ChurnStatus\"},\"Name\":\"Dim_Customer.ChurnStatus\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Customers\"},\"Name\":\"_Measures.Total Customers\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Churn status'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 250.00,
+          "width": 264.00,
+          "x": 996.00,
+          "y": 176.00,
+          "z": 9000.00
+        },
+        {
+          "config": "{\"name\":\"v0025\",\"layouts\":[{\"id\":0,\"position\":{\"x\":189.5354217825155,\"y\":454.65245347830404,\"z\":11000,\"width\":889.5374089792905,\"height\":251.16350371179968,\"tabOrder\":11000}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"Dim_Customer.Segment\"},{\"queryRef\":\"Dim_Customer.CRM_Strategy\"},{\"queryRef\":\"Dim_Customer.CRM_Action\"},{\"queryRef\":\"_Measures.Total Customers\"},{\"queryRef\":\"_Measures.Total Revenue\"},{\"queryRef\":\"_Measures.Average CLV\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"dim14\",\"Entity\":\"Dim_Customer\",\"Type\":0},{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim14\"}},\"Property\":\"Segment\"},\"Name\":\"Dim_Customer.Segment\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim14\"}},\"Property\":\"CRM_Strategy\"},\"Name\":\"Dim_Customer.CRM_Strategy\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim14\"}},\"Property\":\"CRM_Action\"},\"Name\":\"Dim_Customer.CRM_Action\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Customers\"},\"Name\":\"_Measures.Total Customers\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"},\"Name\":\"_Measures.Total Revenue\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Average CLV\"},\"Name\":\"_Measures.Average CLV\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"}}}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Segment, recommended CRM strategy and action'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 251.16,
+          "width": 889.54,
+          "x": 189.54,
+          "y": 454.65,
+          "z": 11000.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{}",
+      "displayName": "Executive Overview",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "ReportSectionExec",
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"txt0001\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":12,\"z\":0,\"width\":700,\"height\":44,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"textbox\",\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"paragraphs\":[{\"textRuns\":[{\"value\":\"Online Retail II - Executive Overview\",\"textStyle\":{\"fontSize\":\"18pt\",\"color\":\"#1B2A36\",\"fontWeight\":\"bold\"}}]}]}}]}}}",
+          "filters": "[]",
+          "height": 44.00,
+          "width": 700.00,
+          "x": 20.00,
+          "y": 12.00,
+          "z": 0.00
+        },
+        {
+          "config": "{\"name\":\"v0002\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":64,\"z\":1000,\"width\":193,\"height\":96,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Total Revenue\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"},\"Name\":\"_Measures.Total Revenue\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Revenue'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 20.00,
+          "y": 64.00,
+          "z": 1000.00
+        },
+        {
+          "config": "{\"name\":\"v0003\",\"layouts\":[{\"id\":0,\"position\":{\"x\":225,\"y\":64,\"z\":2000,\"width\":193,\"height\":96,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Total Orders\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Orders\"},\"Name\":\"_Measures.Total Orders\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Orders'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 225.00,
+          "y": 64.00,
+          "z": 2000.00
+        },
+        {
+          "config": "{\"name\":\"v0004\",\"layouts\":[{\"id\":0,\"position\":{\"x\":430,\"y\":64,\"z\":3000,\"width\":193,\"height\":96,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Total Customers\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Customers\"},\"Name\":\"_Measures.Total Customers\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Customers'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 430.00,
+          "y": 64.00,
+          "z": 3000.00
+        },
+        {
+          "config": "{\"name\":\"v0005\",\"layouts\":[{\"id\":0,\"position\":{\"x\":635,\"y\":64,\"z\":4000,\"width\":193,\"height\":96,\"tabOrder\":4000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Average Order Value\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Average Order Value\"},\"Name\":\"_Measures.Average Order Value\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Avg order value'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 635.00,
+          "y": 64.00,
+          "z": 4000.00
+        },
+        {
+          "config": "{\"name\":\"v0006\",\"layouts\":[{\"id\":0,\"position\":{\"x\":840,\"y\":64,\"z\":5000,\"width\":193,\"height\":96,\"tabOrder\":5000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Units Sold\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Units Sold\"},\"Name\":\"_Measures.Units Sold\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Units'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 840.00,
+          "y": 64.00,
+          "z": 5000.00
+        },
+        {
+          "config": "{\"name\":\"v0007\",\"layouts\":[{\"id\":0,\"position\":{\"x\":1045,\"y\":64,\"z\":6000,\"width\":193,\"height\":96,\"tabOrder\":6000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Return Rate %\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Return Rate %\"},\"Name\":\"_Measures.Return Rate %\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Return rate'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 1045.00,
+          "y": 64.00,
+          "z": 6000.00
+        },
+        {
+          "config": "{\"name\":\"v0008\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":176,\"z\":7000,\"width\":840,\"height\":250,\"tabOrder\":7000}}],\"singleVisual\":{\"visualType\":\"lineChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Dim_Date.DateKey\",\"active\":true}],\"Y\":[{\"queryRef\":\"_Measures.Total Revenue\"},{\"queryRef\":\"_Measures.Revenue 7D Moving Average\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"dim84\",\"Entity\":\"Dim_Date\",\"Type\":0},{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim84\"}},\"Property\":\"DateKey\"},\"Name\":\"Dim_Date.DateKey\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"},\"Name\":\"_Measures.Total Revenue\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Revenue 7D Moving Average\"},\"Name\":\"_Measures.Revenue 7D Moving Average\",\"NativeReferenceName\":\"Revenue 7D Moving Average\"}],\"OrderBy\":[{\"Direction\":1,\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim84\"}},\"Property\":\"DateKey\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Daily revenue vs 7-day moving average'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 250.00,
+          "width": 840.00,
+          "x": 20.00,
+          "y": 176.00,
+          "z": 7000.00
+        },
+        {
+          "config": "{\"name\":\"v0009\",\"layouts\":[{\"id\":0,\"position\":{\"x\":872,\"y\":176,\"z\":8000,\"width\":388,\"height\":250,\"tabOrder\":8000}}],\"singleVisual\":{\"visualType\":\"clusteredBarChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Dim_Country.Country\",\"active\":true}],\"Y\":[{\"queryRef\":\"_Measures.Products Sold\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"dim74\",\"Entity\":\"Dim_Country\",\"Type\":0},{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim74\"}},\"Property\":\"Country\"},\"Name\":\"Dim_Country.Country\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Products Sold\"},\"Name\":\"_Measures.Products Sold\",\"NativeReferenceName\":\"Products Sold\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Products Sold\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Products Sold by country'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 250.00,
+          "width": 388.00,
+          "x": 872.00,
+          "y": 176.00,
+          "z": 8000.00
+        },
+        {
+          "config": "{\"name\":\"v0010\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":438,\"z\":9000,\"width\":512,\"height\":262,\"tabOrder\":9000}}],\"singleVisual\":{\"visualType\":\"clusteredColumnChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Dim_Date.MonthYearLabel\",\"active\":true}],\"Y\":[{\"queryRef\":\"_Measures.Total Revenue\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"dim84\",\"Entity\":\"Dim_Date\",\"Type\":0},{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim84\"}},\"Property\":\"MonthYearLabel\"},\"Name\":\"Dim_Date.MonthYearLabel\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"},\"Name\":\"_Measures.Total Revenue\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Revenue by month'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 262.00,
+          "width": 512.00,
+          "x": 20.00,
+          "y": 438.00,
+          "z": 9000.00
+        },
+        {
+          "config": "{\"name\":\"v0011\",\"layouts\":[{\"id\":0,\"position\":{\"x\":544,\"y\":438,\"z\":10000,\"width\":452,\"height\":262,\"tabOrder\":10000}}],\"singleVisual\":{\"visualType\":\"clusteredBarChart\",\"projections\":{\"Y\":[{\"queryRef\":\"_Measures.Total Revenue\"}],\"Category\":[{\"queryRef\":\"Dim_Product.Description\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0},{\"Name\":\"d\",\"Entity\":\"Dim_Product\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"},\"Name\":\"_Measures.Total Revenue\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Description\"},\"Name\":\"Dim_Product.Description\",\"NativeReferenceName\":\"Description\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"}}}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Top products by revenue'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 262.00,
+          "width": 452.00,
+          "x": 544.00,
+          "y": 438.00,
+          "z": 10000.00
+        },
+        {
+          "config": "{\"name\":\"v0012\",\"layouts\":[{\"id\":0,\"position\":{\"x\":1008,\"y\":438,\"z\":11000,\"width\":252,\"height\":128,\"tabOrder\":11000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Dim_Date.Year\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"dim84\",\"Entity\":\"Dim_Date\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim84\"}},\"Property\":\"Year\"},\"Name\":\"Dim_Date.Year\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Year'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 128.00,
+          "width": 252.00,
+          "x": 1008.00,
+          "y": 438.00,
+          "z": 11000.00
+        },
+        {
+          "config": "{\"name\":\"v0013\",\"layouts\":[{\"id\":0,\"position\":{\"x\":1008,\"y\":574,\"z\":12000,\"width\":252,\"height\":126,\"tabOrder\":12000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Dim_Country.Region\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"dim74\",\"Entity\":\"Dim_Country\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim74\"}},\"Property\":\"Region\"},\"Name\":\"Dim_Country.Region\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{}}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Region'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 126.00,
+          "width": 252.00,
+          "x": 1008.00,
+          "y": 574.00,
+          "z": 12000.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{}",
+      "displayName": "Product & Returns",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "ReportSectionProducts",
+      "ordinal": 2,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"txt0026\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":12,\"z\":0,\"width\":700,\"height\":44,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"textbox\",\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"paragraphs\":[{\"textRuns\":[{\"value\":\"Product and Returns\",\"textStyle\":{\"fontSize\":\"18pt\",\"color\":\"#1B2A36\",\"fontWeight\":\"bold\"}}]}]}}]}}}",
+          "filters": "[]",
+          "height": 44.00,
+          "width": 700.00,
+          "x": 20.00,
+          "y": 12.00,
+          "z": 0.00
+        },
+        {
+          "config": "{\"name\":\"v0027\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":64,\"z\":1000,\"width\":193,\"height\":96,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Products Sold\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Products Sold\"},\"Name\":\"_Measures.Products Sold\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Products'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 20.00,
+          "y": 64.00,
+          "z": 1000.00
+        },
+        {
+          "config": "{\"name\":\"v0028\",\"layouts\":[{\"id\":0,\"position\":{\"x\":225,\"y\":64,\"z\":2000,\"width\":193,\"height\":96,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Units Sold\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Units Sold\"},\"Name\":\"_Measures.Units Sold\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Units'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 225.00,
+          "y": 64.00,
+          "z": 2000.00
+        },
+        {
+          "config": "{\"name\":\"v0029\",\"layouts\":[{\"id\":0,\"position\":{\"x\":430,\"y\":64,\"z\":3000,\"width\":193,\"height\":96,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Class A Revenue %\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Class A Revenue %\"},\"Name\":\"_Measures.Class A Revenue %\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Class A share'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 430.00,
+          "y": 64.00,
+          "z": 3000.00
+        },
+        {
+          "config": "{\"name\":\"v0030\",\"layouts\":[{\"id\":0,\"position\":{\"x\":635,\"y\":64,\"z\":4000,\"width\":193,\"height\":96,\"tabOrder\":4000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Return Rate %\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Return Rate %\"},\"Name\":\"_Measures.Return Rate %\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Return rate'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 635.00,
+          "y": 64.00,
+          "z": 4000.00
+        },
+        {
+          "config": "{\"name\":\"v0031\",\"layouts\":[{\"id\":0,\"position\":{\"x\":840,\"y\":64,\"z\":5000,\"width\":193,\"height\":96,\"tabOrder\":5000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Product Return Rate %\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Product Return Rate %\"},\"Name\":\"_Measures.Product Return Rate %\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Unit return rate'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 840.00,
+          "y": 64.00,
+          "z": 5000.00
+        },
+        {
+          "config": "{\"name\":\"v0032\",\"layouts\":[{\"id\":0,\"position\":{\"x\":1045,\"y\":64,\"z\":6000,\"width\":193,\"height\":96,\"tabOrder\":6000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Non-Product Revenue\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Non-Product Revenue\"},\"Name\":\"_Measures.Non-Product Revenue\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Non-product revenue'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 1045.00,
+          "y": 64.00,
+          "z": 6000.00
+        },
+        {
+          "config": "{\"name\":\"v0033\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":176,\"z\":7000,\"width\":620,\"height\":250,\"tabOrder\":7000}}],\"singleVisual\":{\"visualType\":\"clusteredBarChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Dim_Product.Description\",\"active\":true}],\"Y\":[{\"queryRef\":\"_Measures.Total Revenue\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"dim48\",\"Entity\":\"Dim_Product\",\"Type\":0},{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim48\"}},\"Property\":\"Description\"},\"Name\":\"Dim_Product.Description\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"},\"Name\":\"_Measures.Total Revenue\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"}}}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Top products by revenue'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 250.00,
+          "width": 620.00,
+          "x": 20.00,
+          "y": 176.00,
+          "z": 7000.00
+        },
+        {
+          "config": "{\"name\":\"v0034\",\"layouts\":[{\"id\":0,\"position\":{\"x\":652,\"y\":176,\"z\":8000,\"width\":300,\"height\":250,\"tabOrder\":8000}}],\"singleVisual\":{\"visualType\":\"donutChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Dim_Product.ABC_Class\",\"active\":true}],\"Y\":[{\"queryRef\":\"_Measures.Total Revenue\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"dim48\",\"Entity\":\"Dim_Product\",\"Type\":0},{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim48\"}},\"Property\":\"ABC_Class\"},\"Name\":\"Dim_Product.ABC_Class\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"},\"Name\":\"_Measures.Total Revenue\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'ABC classification'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 250.00,
+          "width": 300.00,
+          "x": 652.00,
+          "y": 176.00,
+          "z": 8000.00
+        },
+        {
+          "config": "{\"name\":\"v0035\",\"layouts\":[{\"id\":0,\"position\":{\"x\":964,\"y\":176,\"z\":9000,\"width\":296,\"height\":250,\"tabOrder\":9000}}],\"singleVisual\":{\"visualType\":\"clusteredColumnChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Dim_Product.PriceBand\",\"active\":true}],\"Y\":[{\"queryRef\":\"_Measures.Total Revenue\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"dim48\",\"Entity\":\"Dim_Product\",\"Type\":0},{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim48\"}},\"Property\":\"PriceBand\"},\"Name\":\"Dim_Product.PriceBand\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"},\"Name\":\"_Measures.Total Revenue\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Revenue by price band'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 250.00,
+          "width": 296.00,
+          "x": 964.00,
+          "y": 176.00,
+          "z": 9000.00
+        },
+        {
+          "config": "{\"name\":\"v0036\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":438,\"z\":10000,\"width\":620,\"height\":262,\"tabOrder\":10000}}],\"singleVisual\":{\"visualType\":\"clusteredColumnChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Fact_Sales.TransactionType\",\"active\":true}],\"Y\":[{\"queryRef\":\"_Measures.Total Revenue\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"fac59\",\"Entity\":\"Fact_Sales\",\"Type\":0},{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"fac59\"}},\"Property\":\"TransactionType\"},\"Name\":\"Fact_Sales.TransactionType\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"},\"Name\":\"_Measures.Total Revenue\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Revenue by transaction type'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 262.00,
+          "width": 620.00,
+          "x": 20.00,
+          "y": 438.00,
+          "z": 10000.00
+        },
+        {
+          "config": "{\"name\":\"v0037\",\"layouts\":[{\"id\":0,\"position\":{\"x\":652,\"y\":438,\"z\":11000,\"width\":608,\"height\":262,\"tabOrder\":11000}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"Dim_Product.Description\"},{\"queryRef\":\"Dim_Product.ABC_Class\"},{\"queryRef\":\"Sum(Dim_Product.UnitsSold)\"},{\"queryRef\":\"Sum(Dim_Product.Revenue)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"dim48\",\"Entity\":\"Dim_Product\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim48\"}},\"Property\":\"Description\"},\"Name\":\"Dim_Product.Description\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim48\"}},\"Property\":\"ABC_Class\"},\"Name\":\"Dim_Product.ABC_Class\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim48\"}},\"Property\":\"UnitsSold\"}},\"Function\":0},\"Name\":\"Sum(Dim_Product.UnitsSold)\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim48\"}},\"Property\":\"Revenue\"}},\"Function\":0},\"Name\":\"Sum(Dim_Product.Revenue)\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Product detail'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 262.00,
+          "width": 608.00,
+          "x": 652.00,
+          "y": 438.00,
+          "z": 11000.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{}",
+      "displayName": "Time & Seasonality",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "ReportSectionTime",
+      "ordinal": 3,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"txt0038\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":12,\"z\":0,\"width\":800,\"height\":44,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"textbox\",\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"paragraphs\":[{\"textRuns\":[{\"value\":\"Time, Seasonality and Operations\",\"textStyle\":{\"fontSize\":\"18pt\",\"color\":\"#1B2A36\",\"fontWeight\":\"bold\"}}]}]}}]}}}",
+          "filters": "[]",
+          "height": 44.00,
+          "width": 800.00,
+          "x": 20.00,
+          "y": 12.00,
+          "z": 0.00
+        },
+        {
+          "config": "{\"name\":\"v0039\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":64,\"z\":1000,\"width\":193,\"height\":96,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Total Revenue\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"},\"Name\":\"_Measures.Total Revenue\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Revenue'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 20.00,
+          "y": 64.00,
+          "z": 1000.00
+        },
+        {
+          "config": "{\"name\":\"v0040\",\"layouts\":[{\"id\":0,\"position\":{\"x\":225,\"y\":64,\"z\":2000,\"width\":193,\"height\":96,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Revenue YoY %\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Revenue YoY %\"},\"Name\":\"_Measures.Revenue YoY %\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'YoY growth'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 225.00,
+          "y": 64.00,
+          "z": 2000.00
+        },
+        {
+          "config": "{\"name\":\"v0041\",\"layouts\":[{\"id\":0,\"position\":{\"x\":430,\"y\":64,\"z\":3000,\"width\":193,\"height\":96,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Average Basket Size\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Average Basket Size\"},\"Name\":\"_Measures.Average Basket Size\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Avg basket size'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 430.00,
+          "y": 64.00,
+          "z": 3000.00
+        },
+        {
+          "config": "{\"name\":\"v0042\",\"layouts\":[{\"id\":0,\"position\":{\"x\":635,\"y\":64,\"z\":4000,\"width\":193,\"height\":96,\"tabOrder\":4000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Cancellation Rate %\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Cancellation Rate %\"},\"Name\":\"_Measures.Cancellation Rate %\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Cancellation rate'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 635.00,
+          "y": 64.00,
+          "z": 4000.00
+        },
+        {
+          "config": "{\"name\":\"v0043\",\"layouts\":[{\"id\":0,\"position\":{\"x\":840,\"y\":64,\"z\":5000,\"width\":193,\"height\":96,\"tabOrder\":5000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Outlier Rows\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Outlier Rows\"},\"Name\":\"_Measures.Outlier Rows\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Outlier rows'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 840.00,
+          "y": 64.00,
+          "z": 5000.00
+        },
+        {
+          "config": "{\"name\":\"v0044\",\"layouts\":[{\"id\":0,\"position\":{\"x\":1045,\"y\":64,\"z\":6000,\"width\":193,\"height\":96,\"tabOrder\":6000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.Outlier Revenue Share %\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Outlier Revenue Share %\"},\"Name\":\"_Measures.Outlier Revenue Share %\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Outlier revenue share'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 96.00,
+          "width": 193.00,
+          "x": 1045.00,
+          "y": 64.00,
+          "z": 6000.00
+        },
+        {
+          "config": "{\"name\":\"v0045\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":176,\"z\":7000,\"width\":760,\"height\":250,\"tabOrder\":7000}}],\"singleVisual\":{\"visualType\":\"pivotTable\",\"projections\":{\"Rows\":[{\"queryRef\":\"Dim_Date.Weekday\",\"active\":true}],\"Columns\":[{\"queryRef\":\"Dim_Hour.DayPart\",\"active\":true}],\"Values\":[{\"queryRef\":\"_Measures.Total Revenue\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"dim84\",\"Entity\":\"Dim_Date\",\"Type\":0},{\"Name\":\"dim6\",\"Entity\":\"Dim_Hour\",\"Type\":0},{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim84\"}},\"Property\":\"Weekday\"},\"Name\":\"Dim_Date.Weekday\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim6\"}},\"Property\":\"DayPart\"},\"Name\":\"Dim_Hour.DayPart\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"},\"Name\":\"_Measures.Total Revenue\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"layout\":{\"expr\":{\"Literal\":{\"Value\":\"'Tabular'\"}}}}}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Revenue by weekday and time of day'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 250.00,
+          "width": 760.00,
+          "x": 20.00,
+          "y": 176.00,
+          "z": 7000.00
+        },
+        {
+          "config": "{\"name\":\"v0046\",\"layouts\":[{\"id\":0,\"position\":{\"x\":792,\"y\":176,\"z\":8000,\"width\":468,\"height\":250,\"tabOrder\":8000}}],\"singleVisual\":{\"visualType\":\"clusteredColumnChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Dim_Hour.HourLabel\",\"active\":true}],\"Y\":[{\"queryRef\":\"_Measures.Total Revenue\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"dim6\",\"Entity\":\"Dim_Hour\",\"Type\":0},{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim6\"}},\"Property\":\"HourLabel\"},\"Name\":\"Dim_Hour.HourLabel\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"},\"Name\":\"_Measures.Total Revenue\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Revenue by hour'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 250.00,
+          "width": 468.00,
+          "x": 792.00,
+          "y": 176.00,
+          "z": 8000.00
+        },
+        {
+          "config": "{\"name\":\"v0047\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":438,\"z\":9000,\"width\":760,\"height\":262,\"tabOrder\":9000}}],\"singleVisual\":{\"visualType\":\"lineChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Dim_Date.MonthYearLabel\",\"active\":true}],\"Y\":[{\"queryRef\":\"_Measures.Total Revenue\"},{\"queryRef\":\"_Measures.Revenue LY\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"dim84\",\"Entity\":\"Dim_Date\",\"Type\":0},{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim84\"}},\"Property\":\"MonthYearLabel\"},\"Name\":\"Dim_Date.MonthYearLabel\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"},\"Name\":\"_Measures.Total Revenue\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Revenue LY\"},\"Name\":\"_Measures.Revenue LY\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Monthly revenue vs last year'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 262.00,
+          "width": 760.00,
+          "x": 20.00,
+          "y": 438.00,
+          "z": 9000.00
+        },
+        {
+          "config": "{\"name\":\"v0048\",\"layouts\":[{\"id\":0,\"position\":{\"x\":792,\"y\":438,\"z\":10000,\"width\":468,\"height\":262,\"tabOrder\":10000}}],\"singleVisual\":{\"visualType\":\"clusteredColumnChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Dim_Date.Quarter\",\"active\":true}],\"Y\":[{\"queryRef\":\"_Measures.Total Revenue\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"dim84\",\"Entity\":\"Dim_Date\",\"Type\":0},{\"Name\":\"mea65\",\"Entity\":\"_Measures\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"dim84\"}},\"Property\":\"Quarter\"},\"Name\":\"Dim_Date.Quarter\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"mea65\"}},\"Property\":\"Total Revenue\"},\"Name\":\"_Measures.Total Revenue\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Revenue by quarter'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#1B2A36'\"}}}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 262.00,
+          "width": 468.00,
+          "x": 792.00,
+          "y": 438.00,
+          "z": 10000.00
+        }
+      ],
+      "width": 1280.00
+    }
+  ]
+}

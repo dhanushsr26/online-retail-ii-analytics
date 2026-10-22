@@ -1,0 +1,60 @@
+table Dim_Country
+	lineageTag: d63e50af-67cf-4f3d-8c46-c4b76fc2674c
+
+	column Country
+		dataType: string
+		lineageTag: 68c13e33-6684-4792-899b-63d393e7e828
+		summarizeBy: none
+		sourceColumn: Country
+
+	column CountryISO
+		dataType: string
+		lineageTag: dedcf45f-106c-4825-822a-14cebf50b88f
+		summarizeBy: none
+		sourceColumn: CountryISO
+
+	column Region
+		dataType: string
+		lineageTag: ae0f39a4-3f5d-4980-b41c-fbd431a84586
+		summarizeBy: none
+		sourceColumn: Region
+
+	column Rows
+		dataType: int64
+		lineageTag: c6e88593-1d2e-44fa-8650-bcde06bde827
+		summarizeBy: sum
+		sourceColumn: Rows
+
+	column Revenue
+		dataType: double
+		lineageTag: 7d8019e6-4335-4937-8cf1-f399d67a28ca
+		summarizeBy: sum
+		sourceColumn: Revenue
+
+	column Customers
+		dataType: int64
+		lineageTag: 0ebbb797-282c-4acf-899d-33b44e5168ce
+		summarizeBy: sum
+		sourceColumn: Customers
+
+	partition Dim_Country = m
+		mode: import
+		source =
+				let
+				    // ================================================================
+				    // Dim_Country - one row per country, aggregated from the cleaned fact.
+				    // Derived by 01_scripts/03_clean.py in the same cleaning run that
+				    // produces Fact_Sales, then written out as CSV. Techniques applied
+				    // upstream, per BA-6 Preprocessing Techniques.pdf:
+				    //   - Unit Conversion - canonical country name
+				    //   - Data Integration - ISO code and region lookup
+				    // Regenerate with:  python 01_scripts/03_clean.py
+				    // Verify with:      python 01_scripts/04_validate.py
+				    // ================================================================
+				
+				    Source = Csv.Document(File.Contents(SourceFolder & "\02_clean\Dim_Country.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    #"Set Data Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"Country", type text}, {"CountryISO", type text}, {"Region", type text}, {"Rows", Int64.Type}, {"Revenue", type number}, {"Customers", Int64.Type}})
+				in
+				    #"Set Data Types"
+

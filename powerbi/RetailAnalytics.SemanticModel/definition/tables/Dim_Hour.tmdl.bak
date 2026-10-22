@@ -1,0 +1,53 @@
+table Dim_Hour
+	lineageTag: 7206a786-a612-44c4-8d4a-66319122f5d3
+
+	column Hour
+		dataType: int64
+		lineageTag: c1ba7488-483d-4141-a8e2-285699c6d9fd
+		summarizeBy: none
+		sourceColumn: Hour
+
+	column HourLabel
+		dataType: string
+		lineageTag: 74c3c527-d68f-4e62-9c7d-0ea62a7fff6c
+		summarizeBy: none
+		sourceColumn: HourLabel
+		sortByColumn: Hour
+
+	column DayPart
+		dataType: string
+		lineageTag: 61e38293-8340-4eee-b91e-576bf743c845
+		summarizeBy: none
+		sourceColumn: DayPart
+		sortByColumn: Hour
+
+	partition Dim_Hour = m
+		mode: import
+		source =
+				let
+				    // ================================================================
+				    // Dim_Hour - generated, not loaded. The 24 hours of the trading day
+				    // with the day-part banding used on the Time page. The bands match
+				    // the cut points in 03_clean.py exactly: 0-11, 12-16, 17-20, 21-23.
+				    // ================================================================
+				
+				    #"Generate Hours" = Table.FromList(
+				        List.Numbers(0, 24, 1), Splitter.SplitByNothing(), {"Hour"}),
+				
+				    #"Set Data Types" = Table.TransformColumnTypes(
+				        #"Generate Hours", {{"Hour", Int64.Type}}),
+				
+				    #"Derive Hour Label" = Table.AddColumn(
+				        #"Set Data Types", "HourLabel",
+				        each Text.PadStart(Text.From([Hour]), 2, "0") & ":00", type text),
+				
+				    // Discretization / Binning - BA-6 Preprocessing Techniques.pdf
+				    #"Binning - Day Part" = Table.AddColumn(
+				        #"Derive Hour Label", "DayPart",
+				        each if [Hour] <= 11 then "Morning"
+				             else if [Hour] <= 16 then "Afternoon"
+				             else if [Hour] <= 20 then "Evening"
+				             else "Night", type text)
+				in
+				    #"Binning - Day Part"
+

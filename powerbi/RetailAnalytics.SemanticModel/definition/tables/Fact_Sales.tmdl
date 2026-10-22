@@ -1,0 +1,326 @@
+table Fact_Sales
+	lineageTag: d6bcf826-6ce2-4ae9-a06f-b1b06a189f74
+
+	column Invoice
+		dataType: string
+		lineageTag: bc67d46a-1b83-40a4-bca4-4a6afbcab205
+		summarizeBy: none
+		sourceColumn: Invoice
+
+	column StockCode
+		dataType: string
+		lineageTag: 4387def2-34d9-4bcd-a2cb-cef9e2842881
+		summarizeBy: none
+		sourceColumn: StockCode
+
+	column CustomerKey
+		dataType: int64
+		lineageTag: 9b9a4271-572d-4a00-a14f-f98aac855443
+		summarizeBy: none
+		sourceColumn: CustomerKey
+
+	column Country
+		dataType: string
+		lineageTag: 9519ae4d-e45e-479e-a8ea-8cf8e5094605
+		summarizeBy: none
+		sourceColumn: Country
+
+	column InvoiceDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 8c920388-8b34-499d-ac9f-17cb0d1f0d1a
+		summarizeBy: none
+		sourceColumn: InvoiceDate
+
+	column Hour
+		dataType: int64
+		lineageTag: 1f9dab88-cde3-4f07-b134-21ea419d4527
+		summarizeBy: none
+		sourceColumn: Hour
+
+	column Quantity
+		dataType: int64
+		lineageTag: 96925b33-c193-422c-b096-97c926cec68a
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+	column Price
+		dataType: double
+		formatString: \£#,0.00;(\£#,0.00);\£#,0.00
+		lineageTag: e5e519f2-d414-4d57-9787-71d55ec90e54
+		summarizeBy: none
+		sourceColumn: Price
+
+	column Revenue
+		dataType: double
+		formatString: \£#,0.00;(\£#,0.00);\£#,0.00
+		lineageTag: 58ed5490-9cf6-4164-b33e-8952df0c2065
+		summarizeBy: sum
+		sourceColumn: Revenue
+
+	column IsCancelled
+		dataType: boolean
+		lineageTag: ed3aef23-f563-4d54-a42d-6ae36f153621
+		summarizeBy: none
+		sourceColumn: IsCancelled
+
+	column IsReturn
+		dataType: boolean
+		lineageTag: 531474e6-d8c3-458a-a00c-8fdb5f8227e9
+		summarizeBy: none
+		sourceColumn: IsReturn
+
+	column IsProduct
+		dataType: boolean
+		lineageTag: 4f58c4a6-5880-46fb-9b59-5a1538fb2ad7
+		summarizeBy: none
+		sourceColumn: IsProduct
+
+	column HasCustomer
+		dataType: boolean
+		lineageTag: 07f3c5f2-bcbf-408b-b673-0f6fae2fede0
+		summarizeBy: none
+		sourceColumn: HasCustomer
+
+	column TransactionType
+		dataType: string
+		lineageTag: bb1a921e-4d18-4604-a7eb-0c23cfc8c176
+		summarizeBy: none
+		sourceColumn: TransactionType
+
+	column Is_Outlier
+		dataType: boolean
+		lineageTag: 2f318a94-2a45-478e-8ca9-8c5d8251af51
+		summarizeBy: none
+		sourceColumn: Is_Outlier
+
+	column Outlier_Reason
+		dataType: string
+		lineageTag: 7e1b213f-a9b2-4f0f-a551-cf6c933ae6ba
+		summarizeBy: none
+		sourceColumn: Outlier_Reason
+
+	column SourceSheet
+		dataType: string
+		lineageTag: 9d6cfcbd-5a65-479b-9f2e-6a7a18d6c11a
+		summarizeBy: none
+		sourceColumn: SourceSheet
+
+	column DateOnly = DATEVALUE ( Fact_Sales[InvoiceDate] )
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ff4b1c69-ca6c-42bb-bc3a-79c3f46b4aeb
+		summarizeBy: none
+
+	partition Fact_Sales = m
+		mode: import
+		source =
+				let
+				    // ================================================================
+				    // Fact_Sales - the full cleaning pipeline, from the RAW workbook.
+				    // Each step is named after the technique in BA-6 Preprocessing
+				    // Techniques.pdf that it applies, so Applied Steps reads as the
+				    // syllabus. Must finish on 1,028,743 rows / GBP 18,854,778.33.
+				    // ================================================================
+				
+				    Source = Excel.Workbook(
+				        File.Contents(SourceFolder & "\00_source\online_retail_II.xlsx"), null, true),
+				
+				    Sheet0910 = Table.PromoteHeaders(
+				        Source{[Item = "Year 2009-2010", Kind = "Sheet"]}[Data], [PromoteAllScalars = true]),
+				    Sheet1011 = Table.PromoteHeaders(
+				        Source{[Item = "Year 2010-2011", Kind = "Sheet"]}[Data], [PromoteAllScalars = true]),
+				    Tag0910 = Table.AddColumn(Sheet0910, "SourceSheet", each "Year 2009-2010", type text),
+				    Tag1011 = Table.AddColumn(Sheet1011, "SourceSheet", each "Year 2010-2011", type text),
+				
+				    #"Data Integration - Append Both Sheets" = Table.Combine({Tag0910, Tag1011}),
+				
+				    #"Set Data Types" = Table.TransformColumnTypes(
+				        #"Data Integration - Append Both Sheets", {
+				            {"Invoice", type text}, {"StockCode", type text},
+				            {"Description", type text}, {"Quantity", Int64.Type},
+				            {"InvoiceDate", type datetime}, {"Price", type number},
+				            {"Customer ID", type number}, {"Country", type text}}),
+				
+				    // The two sheets overlap 1-9 Dec 2010: 22,202 rows appear in both, and a
+				    // further 12,133 are ordinary within-sheet repeats. Distinct over the eight
+				    // business columns removes both, correcting GBP 431,716.87 of
+				    // double-counted revenue.
+				    #"Duplicate Removal - Exact Match" = Table.Distinct(
+				        #"Set Data Types",
+				        {"Invoice", "StockCode", "Description", "Quantity",
+				         "InvoiceDate", "Price", "Customer ID", "Country"}),
+				
+				    #"Unit Conversion - Trim And Case" = Table.TransformColumns(
+				        #"Duplicate Removal - Exact Match", {
+				            {"StockCode", each Text.Upper(Text.Trim(_)), type text},
+				            {"Invoice", each Text.Trim(_), type text},
+				            {"Description", each if _ = null then null
+				                                 else Text.Proper(Text.Trim(Text.Clean(_))), type text}}),
+				
+				    // Canonical country name, ISO-3 code and region. Region is Data
+				    // Generalization applied one level above the raw label.
+				    CountryRows = {
+				        {"United Kingdom", "United Kingdom", "GBR", "United Kingdom"},
+				        {"EIRE", "Ireland", "IRL", "Europe"},
+				        {"Germany", "Germany", "DEU", "Europe"},
+				        {"France", "France", "FRA", "Europe"},
+				        {"Netherlands", "Netherlands", "NLD", "Europe"},
+				        {"Spain", "Spain", "ESP", "Europe"},
+				        {"Switzerland", "Switzerland", "CHE", "Europe"},
+				        {"Belgium", "Belgium", "BEL", "Europe"},
+				        {"Portugal", "Portugal", "PRT", "Europe"},
+				        {"Australia", "Australia", "AUS", "Asia-Pacific"},
+				        {"Channel Islands", "Channel Islands", "JEY", "Europe"},
+				        {"Italy", "Italy", "ITA", "Europe"},
+				        {"Norway", "Norway", "NOR", "Europe"},
+				        {"Sweden", "Sweden", "SWE", "Europe"},
+				        {"Cyprus", "Cyprus", "CYP", "Europe"},
+				        {"Finland", "Finland", "FIN", "Europe"},
+				        {"Austria", "Austria", "AUT", "Europe"},
+				        {"Denmark", "Denmark", "DNK", "Europe"},
+				        {"Greece", "Greece", "GRC", "Europe"},
+				        {"Japan", "Japan", "JPN", "Asia-Pacific"},
+				        {"USA", "United States", "USA", "Americas"},
+				        {"Poland", "Poland", "POL", "Europe"},
+				        {"United Arab Emirates", "United Arab Emirates", "ARE", "Middle East & Africa"},
+				        {"Israel", "Israel", "ISR", "Middle East & Africa"},
+				        {"Hong Kong", "Hong Kong", "HKG", "Asia-Pacific"},
+				        {"Singapore", "Singapore", "SGP", "Asia-Pacific"},
+				        {"Malta", "Malta", "MLT", "Europe"},
+				        {"Iceland", "Iceland", "ISL", "Europe"},
+				        {"Canada", "Canada", "CAN", "Americas"},
+				        {"Lithuania", "Lithuania", "LTU", "Europe"},
+				        {"RSA", "South Africa", "ZAF", "Middle East & Africa"},
+				        {"Bahrain", "Bahrain", "BHR", "Middle East & Africa"},
+				        {"Brazil", "Brazil", "BRA", "Americas"},
+				        {"Thailand", "Thailand", "THA", "Asia-Pacific"},
+				        {"Korea", "South Korea", "KOR", "Asia-Pacific"},
+				        {"Lebanon", "Lebanon", "LBN", "Middle East & Africa"},
+				        {"West Indies", "West Indies", "", "Americas"},
+				        {"Bermuda", "Bermuda", "BMU", "Americas"},
+				        {"Nigeria", "Nigeria", "NGA", "Middle East & Africa"},
+				        {"Czech Republic", "Czech Republic", "CZE", "Europe"},
+				        {"Saudi Arabia", "Saudi Arabia", "SAU", "Middle East & Africa"},
+				        {"Unspecified", "Unknown", "", "Unknown"},
+				        {"European Community", "Unknown (EU, unallocated)", "", "Europe"}},
+				    CountryLookup = Table.FromRows(
+				        CountryRows, {"CountryRaw", "CountryClean", "CountryISO", "Region"}),
+				
+				    #"Unit Conversion - Canonical Country" = Table.NestedJoin(
+				        #"Unit Conversion - Trim And Case", {"Country"},
+				        CountryLookup, {"CountryRaw"}, "cty", JoinKind.LeftOuter),
+				    #"Expand Country" = Table.ExpandTableColumn(
+				        #"Unit Conversion - Canonical Country", "cty", {"CountryClean"}, {"CountryClean"}),
+				    #"Replace Country" = Table.RenameColumns(
+				        Table.RemoveColumns(#"Expand Country", {"Country"}), {{"CountryClean", "Country"}}),
+				
+				    // Integer surrogate key; -1 marks a transaction with no identified
+				    // customer. A text key mixing numbers and a word breaks the relationship
+				    // silently, because one side is inferred as numeric and the other as text.
+				    #"Attribute Construction - Customer Key" = Table.AddColumn(
+				        #"Replace Country", "CustomerKey",
+				        each if [#"Customer ID"] = null then -1
+				             else Number.RoundDown([#"Customer ID"]), Int64.Type),
+				
+				    // 1,210 stock codes carry more than one Description, so an exact
+				    // eight-column match misses a line repeated under a second spelling.
+				    // Description is a product attribute, not part of a transaction's identity.
+				    #"Duplicate Removal - Business Key" = Table.Distinct(
+				        #"Attribute Construction - Customer Key",
+				        {"Invoice", "StockCode", "Quantity", "Price",
+				         "InvoiceDate", "CustomerKey", "Country"}),
+				
+				    // MAR, not MCAR: every row with no Description also has no Customer ID and
+				    // a price of zero. They carry no revenue, so removing them costs nothing.
+				    // Rows missing ONLY the Customer ID are deliberately kept - they hold
+				    // GBP 2.57m of real revenue. Deletion happens in Dim_Customer instead.
+				    #"Missing Value Removal - MAR Zero Value" = Table.SelectRows(
+				        #"Duplicate Removal - Business Key",
+				        each not ([Description] = null and [Price] = 0)),
+				
+				    #"Missing Value Imputation - Placeholder" = Table.ReplaceValue(
+				        #"Missing Value Removal - MAR Zero Value",
+				        null, "Unknown Item", Replacer.ReplaceValue, {"Description"}),
+				
+				    #"Remove Test Records" = Table.SelectRows(
+				        #"Missing Value Imputation - Placeholder",
+				        each not List.Contains({"TEST001", "TEST002"}, [StockCode])),
+				
+				    // Attribute Construction - the PDF's Defect % = Defective / Produced x 100
+				    // applied to this data as Revenue, return flags and calendar parts.
+				    #"Attribute Construction - Revenue" = Table.AddColumn(
+				        #"Remove Test Records", "Revenue",
+				        each Number.Round([Quantity] * [Price], 2), type number),
+				    #"Attribute Construction - Is Cancelled" = Table.AddColumn(
+				        #"Attribute Construction - Revenue", "IsCancelled",
+				        each Text.StartsWith([Invoice], "C"), type logical),
+				    #"Attribute Construction - Is Return" = Table.AddColumn(
+				        #"Attribute Construction - Is Cancelled", "IsReturn",
+				        each [Quantity] < 0, type logical),
+				    #"Attribute Construction - Has Customer" = Table.AddColumn(
+				        #"Attribute Construction - Is Return", "HasCustomer",
+				        each [CustomerKey] <> -1, type logical),
+				    #"Attribute Construction - Item Type" = Table.AddColumn(
+				        #"Attribute Construction - Has Customer", "ItemType",
+				        each let c = [StockCode] in
+				            if List.Contains({"POST", "DOT", "C2", "C3"}, c) then "Postage & Carriage"
+				            else if List.Contains({"M", "D", "B", "S", "BANK CHARGES", "AMAZONFEE",
+				                                   "ADJUST", "ADJUST2", "CRUK", "PADS"}, c)
+				                 then "Fee / Adjustment"
+				            else if Text.StartsWith(c, "GIFT") then "Gift Voucher"
+				            else if Text.StartsWith(c, "DCGS") then "Discount / Sample"
+				            else if Value.Is(Value.FromText(Text.Start(c, 5)), type number) then "Product"
+				            else "Other Non-Product", type text),
+				    #"Attribute Construction - Is Product" = Table.AddColumn(
+				        #"Attribute Construction - Item Type", "IsProduct",
+				        each [ItemType] = "Product", type logical),
+				    #"Attribute Construction - Transaction Type" = Table.AddColumn(
+				        #"Attribute Construction - Is Product", "TransactionType",
+				        each if [IsCancelled] then "Cancellation"
+				             else if [IsReturn] then "Write-off / Return"
+				             else if [Price] = 0 then "Zero-price (promo/adjustment)"
+				             else "Sale", type text),
+				    #"Attribute Construction - Hour" = Table.AddColumn(
+				        #"Attribute Construction - Transaction Type", "Hour",
+				        each Time.Hour(DateTime.Time([InvoiceDate])), Int64.Type),
+				
+				    // Outlier Detection - z-score AND IQR, flagged and never deleted. A plain
+				    // 1.5xIQR rule would discard about 11% of rows, which describes a skewed
+				    // retail distribution rather than finding errors. The 80,995-unit order and
+				    // the GBP 38,970 Manual adjustment are real business events.
+				    // Thresholds are constants rather than computed over the column. Buffering
+				    // a million rows twice to derive four numbers exhausted memory and took
+				    // Power BI down. These values come from 01_scripts/03_clean.py on this
+				    // exact dataset and are reproduced by 04_validate.py, so the flags are
+				    // identical either way - 1,751 rows, 1,138 on quantity and 613 on price.
+				    QtyMean = 10.1907502651, QtySD = 172.3750292299, QtyLo = -26.0, QtyHi = 37.0,
+				    PrcMean = 4.6331696527, PrcSD = 122.6522809904, PrcLo = -7.45, PrcHi = 12.85,
+				
+				    #"Outlier Detection - Reason" = Table.AddColumn(
+				        #"Attribute Construction - Hour", "Outlier_Reason",
+				        each let
+				                q = Number.Abs(([Quantity] - QtyMean) / QtySD) > 3
+				                    and ([Quantity] < QtyLo or [Quantity] > QtyHi),
+				                p = Number.Abs(([Price] - PrcMean) / PrcSD) > 3
+				                    and ([Price] < PrcLo or [Price] > PrcHi)
+				             in
+				                if q and p then "Extreme Quantity + Extreme Price"
+				                else if q then "Extreme Quantity"
+				                else if p then "Extreme Price"
+				                else "Within normal range", type text),
+				    #"Outlier Detection - Flag" = Table.AddColumn(
+				        #"Outlier Detection - Reason", "Is_Outlier",
+				        each [Outlier_Reason] <> "Within normal range", type logical),
+				
+				    // Dimensionality Reduction - the fact keeps keys, measures and flags only;
+				    // descriptive attributes live once per key in the dimension tables.
+				    #"Dimensionality Reduction - Select Fact Columns" = Table.SelectColumns(
+				        #"Outlier Detection - Flag",
+				        {"Invoice", "StockCode", "CustomerKey", "Country", "InvoiceDate", "Hour",
+				         "Quantity", "Price", "Revenue", "IsCancelled", "IsReturn", "IsProduct",
+				         "HasCustomer", "TransactionType", "Is_Outlier", "Outlier_Reason",
+				         "SourceSheet"})
+				in
+				    #"Dimensionality Reduction - Select Fact Columns"
+

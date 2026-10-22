@@ -1,0 +1,207 @@
+table Dim_Customer
+	lineageTag: 7a786e04-178d-47b6-878e-bfb34f34b02a
+
+	column CustomerKey
+		dataType: int64
+		lineageTag: 191048ae-86b6-48e9-9e0b-3640ae74d855
+		summarizeBy: none
+		sourceColumn: CustomerKey
+
+	column Recency
+		dataType: double
+		lineageTag: 8c50ad78-c692-427d-98bf-be162593ee0c
+		summarizeBy: none
+		sourceColumn: Recency
+
+	column Frequency
+		dataType: double
+		lineageTag: 6aaf4d28-1717-4da5-800b-e753c781b846
+		summarizeBy: sum
+		sourceColumn: Frequency
+
+	column Monetary
+		dataType: double
+		formatString: \£#,0.00;(\£#,0.00);\£#,0.00
+		lineageTag: 5cd21129-7276-4e61-8c73-00194207d212
+		summarizeBy: sum
+		sourceColumn: Monetary
+
+	column FirstPurchase
+		dataType: string
+		lineageTag: 0e2fde25-09c1-45e3-a11c-b6062ebf01df
+		summarizeBy: none
+		sourceColumn: FirstPurchase
+
+	column LastPurchase
+		dataType: string
+		lineageTag: 9d7ab962-37c2-493f-acf0-c6944da00f51
+		summarizeBy: none
+		sourceColumn: LastPurchase
+
+	column UnitsBought
+		dataType: double
+		lineageTag: df502891-1625-4f9f-8623-a891f2a8421d
+		summarizeBy: none
+		sourceColumn: UnitsBought
+
+	column LinesBought
+		dataType: double
+		lineageTag: 004ba11a-65ea-40a0-820f-c6be7de7840c
+		summarizeBy: none
+		sourceColumn: LinesBought
+
+	column TenureDays
+		dataType: double
+		lineageTag: 4c415aa4-9b66-4dc8-a87b-3f86cee335f0
+		summarizeBy: none
+		sourceColumn: TenureDays
+
+	column AvgOrderValue
+		dataType: double
+		formatString: \£#,0.00;(\£#,0.00);\£#,0.00
+		lineageTag: 23a08107-4bfa-4d4a-9dc6-fc4ba31aacf5
+		summarizeBy: none
+		sourceColumn: AvgOrderValue
+
+	column Recency_MinMax
+		dataType: double
+		lineageTag: 76b2990f-6082-410e-b59d-2b8260c411cd
+		summarizeBy: none
+		sourceColumn: Recency_MinMax
+
+	column Recency_Z
+		dataType: double
+		lineageTag: 5323501e-9362-4c9e-a1c0-4155c4f31ec5
+		summarizeBy: none
+		sourceColumn: Recency_Z
+
+	column Frequency_MinMax
+		dataType: double
+		lineageTag: c95e13c5-2d1d-49f0-9c0e-13ad6027d039
+		summarizeBy: none
+		sourceColumn: Frequency_MinMax
+
+	column Frequency_Z
+		dataType: double
+		lineageTag: b494ca51-864d-4169-b37f-2896a47b683f
+		summarizeBy: none
+		sourceColumn: Frequency_Z
+
+	column Monetary_MinMax
+		dataType: double
+		lineageTag: 503ef2c1-0bc1-4b5d-b5f8-cdfcf222c972
+		summarizeBy: none
+		sourceColumn: Monetary_MinMax
+
+	column Monetary_Z
+		dataType: double
+		lineageTag: f8bc3420-3c65-41f0-b06e-9923c8e78033
+		summarizeBy: none
+		sourceColumn: Monetary_Z
+
+	column R_Score
+		dataType: double
+		lineageTag: 7bc37490-3209-4422-aeb9-d3a438d95431
+		summarizeBy: none
+		sourceColumn: R_Score
+
+	column F_Score
+		dataType: double
+		lineageTag: f10a42d6-8a86-4543-9615-9b75f8586dff
+		summarizeBy: none
+		sourceColumn: F_Score
+
+	column M_Score
+		dataType: double
+		lineageTag: ea6059bd-aeb8-4c79-b248-06162eee5a8a
+		summarizeBy: none
+		sourceColumn: M_Score
+
+	column RFM_Score
+		dataType: double
+		lineageTag: 3a16a2f6-a13d-4c1b-ace8-0ce53c70eb5b
+		summarizeBy: none
+		sourceColumn: RFM_Score
+
+	column RFM_Sum
+		dataType: double
+		lineageTag: 45f58756-8eb5-4eb2-b432-2b0e546668fb
+		summarizeBy: none
+		sourceColumn: RFM_Sum
+
+	column Segment
+		dataType: string
+		lineageTag: c847dfd2-c82e-461f-a2c3-e519bfa7bf3a
+		summarizeBy: none
+		sourceColumn: Segment
+
+	column RecencyBand
+		dataType: string
+		lineageTag: 29d23eae-3de5-48ce-8234-ba6d9da316b2
+		summarizeBy: none
+		sourceColumn: RecencyBand
+
+	column ValueTier
+		dataType: string
+		lineageTag: 3fc45c34-e40b-445c-9d14-e38eede1e550
+		summarizeBy: none
+		sourceColumn: ValueTier
+
+	column CRM_Strategy
+		dataType: string
+		lineageTag: 200014fe-1782-459f-81bf-645da184f620
+		summarizeBy: none
+		sourceColumn: CRM_Strategy
+
+	column CRM_Action
+		dataType: string
+		lineageTag: c35a9f3b-1ea3-43ae-a00b-c83b2d6f156b
+		summarizeBy: none
+		sourceColumn: CRM_Action
+
+	column ChurnStatus
+		dataType: string
+		lineageTag: 58220e27-67b5-44a3-b5b2-df43a67750d2
+		summarizeBy: none
+		sourceColumn: ChurnStatus
+
+	column IsChurned
+		dataType: boolean
+		lineageTag: bdd267d9-cf62-419d-aff0-dfba4bde8152
+		summarizeBy: none
+		sourceColumn: IsChurned
+
+	column PurchaseFrequencyPerYear
+		dataType: double
+		lineageTag: ceff5822-1c30-41fe-a070-48bfc8eae36b
+		summarizeBy: none
+		sourceColumn: PurchaseFrequencyPerYear
+
+	column CLV
+		dataType: double
+		lineageTag: b23038bc-1ec6-4966-8a1b-c0808cfcc364
+		summarizeBy: none
+		sourceColumn: CLV
+
+	partition Dim_Customer = m
+		mode: import
+		source =
+				let
+				    // ================================================================
+				    // Dim_Customer - one row per customer, aggregated from the cleaned fact.
+				    // Derived by 01_scripts/03_clean.py in the same cleaning run that
+				    // produces Fact_Sales, then written out as CSV. Techniques applied
+				    // upstream, per BA-6 Preprocessing Techniques.pdf:
+				    //   - RFM scoring - quintile discretization of Recency/Frequency/Monetary
+				    //   - Min-Max normalization and Z-score standardization of the same three
+				    //   - Segment, CRM strategy, churn status and CLV derived from the scores
+				    // Regenerate with:  python 01_scripts/03_clean.py
+				    // Verify with:      python 01_scripts/04_validate.py
+				    // ================================================================
+				
+				    Source = Csv.Document(File.Contents(SourceFolder & "\02_clean\Dim_Customer.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    #"Set Data Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"CustomerKey", Int64.Type}, {"Recency", type number}, {"Frequency", type number}, {"Monetary", type number}, {"FirstPurchase", type text}, {"LastPurchase", type text}, {"UnitsBought", type number}, {"LinesBought", type number}, {"TenureDays", type number}, {"AvgOrderValue", type number}, {"Recency_MinMax", type number}, {"Recency_Z", type number}, {"Frequency_MinMax", type number}, {"Frequency_Z", type number}, {"Monetary_MinMax", type number}, {"Monetary_Z", type number}, {"R_Score", type number}, {"F_Score", type number}, {"M_Score", type number}, {"RFM_Score", type number}, {"RFM_Sum", type number}, {"Segment", type text}, {"RecencyBand", type text}, {"ValueTier", type text}, {"CRM_Strategy", type text}, {"CRM_Action", type text}, {"ChurnStatus", type text}, {"IsChurned", type logical}, {"PurchaseFrequencyPerYear", type number}, {"CLV", type number}})
+				in
+				    #"Set Data Types"
+

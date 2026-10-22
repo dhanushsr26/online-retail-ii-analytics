@@ -1,0 +1,561 @@
+================================================================================
+POWER QUERY (M) SOURCE - Online Retail II
+Business Analytics project, M.Sc Semester 3
+================================================================================
+
+WHY THIS FILE EXISTS
+--------------------
+The .pbix must show its own work. Power Query connects to the RAW Excel file and
+reproduces the row-level cleaning inside Power BI, so an examiner clicking
+through Applied Steps sees the syllabus reflected back at them. Each step is
+named after the technique in BA-6 Preprocessing Techniques.pdf that it applies.
+
+Python (01_scripts/03_clean.py) is the evidence and validation engine: it
+produces the before/after counts in Dim_DataQuality and the customer-level
+tables. Both routes must land on the SAME numbers:
+
+    Fact_Sales  =  1,028,743 rows      Net revenue  =  GBP 18,854,778.33
+
+If the row count in Power Query does not read 1,028,743, something has drifted -
+do not build on it.
+
+HOW TO USE
+----------
+1. Power BI Desktop > Home > Transform data > New Source > Blank Query
+2. Home > Advanced Editor
+3. Paste one block below, rename the query to the heading name, Done
+4. Repeat for each query
+5. Set the parameter SourceFolder first - every other query depends on it
+
+QUERY LOAD SETTINGS
+-------------------
+Enable load  : Fact_Sales, Dim_Product, Dim_Country, Dim_Date, Dim_Hour,
+               Dim_Customer, Dim_DataQuality, Agg_Daily, Agg_Histograms
+Disable load : Source_Raw, CountryLookup       (right-click > uncheck Enable load)
+               These are staging queries; loading them would duplicate data.
+
+
+================================================================================
+0. PARAMETER - SourceFolder
+================================================================================
+Home > Manage Parameters > New Parameter
+    Name         : SourceFolder
+    Type         : Text
+    Current Value: D:\Semester 3\Business Analytics\Project
+
+Everything below builds its paths from this, so the project folder can move
+without editing ten queries.
+
+
+================================================================================
+1. CountryLookup          (staging - disable load)
+================================================================================
+Canonical country name, ISO-3 code and region for every label in the raw data.
+Region is Data Generalization applied to Country - the PDF's Young / Middle-aged
+/ Senior pattern, one level up from the raw value.
+
+let
+    Rows = {
+        {"United Kingdom",       "United Kingdom",            "GBR", "United Kingdom"},
+        {"EIRE",                 "Ireland",                   "IRL", "Europe"},
+        {"Germany",              "Germany",                   "DEU", "Europe"},
+        {"France",               "France",                    "FRA", "Europe"},
+        {"Netherlands",          "Netherlands",               "NLD", "Europe"},
+        {"Spain",                "Spain",                     "ESP", "Europe"},
+        {"Switzerland",          "Switzerland",               "CHE", "Europe"},
+        {"Belgium",              "Belgium",                   "BEL", "Europe"},
+        {"Portugal",             "Portugal",                  "PRT", "Europe"},
+        {"Australia",            "Australia",                 "AUS", "Asia-Pacific"},
+        {"Channel Islands",      "Channel Islands",           "JEY", "Europe"},
+        {"Italy",                "Italy",                     "ITA", "Europe"},
+        {"Norway",               "Norway",                    "NOR", "Europe"},
+        {"Sweden",               "Sweden",                    "SWE", "Europe"},
+        {"Cyprus",               "Cyprus",                    "CYP", "Europe"},
+        {"Finland",              "Finland",                   "FIN", "Europe"},
+        {"Austria",              "Austria",                   "AUT", "Europe"},
+        {"Denmark",              "Denmark",                   "DNK", "Europe"},
+        {"Greece",               "Greece",                    "GRC", "Europe"},
+        {"Japan",                "Japan",                     "JPN", "Asia-Pacific"},
+        {"USA",                  "United States",             "USA", "Americas"},
+        {"Poland",               "Poland",                    "POL", "Europe"},
+        {"United Arab Emirates", "United Arab Emirates",      "ARE", "Middle East & Africa"},
+        {"Israel",               "Israel",                    "ISR", "Middle East & Africa"},
+        {"Hong Kong",            "Hong Kong",                 "HKG", "Asia-Pacific"},
+        {"Singapore",            "Singapore",                 "SGP", "Asia-Pacific"},
+        {"Malta",                "Malta",                     "MLT", "Europe"},
+        {"Iceland",              "Iceland",                   "ISL", "Europe"},
+        {"Canada",               "Canada",                    "CAN", "Americas"},
+        {"Lithuania",            "Lithuania",                 "LTU", "Europe"},
+        {"RSA",                  "South Africa",              "ZAF", "Middle East & Africa"},
+        {"Bahrain",              "Bahrain",                   "BHR", "Middle East & Africa"},
+        {"Brazil",               "Brazil",                    "BRA", "Americas"},
+        {"Thailand",             "Thailand",                  "THA", "Asia-Pacific"},
+        {"Korea",                "South Korea",               "KOR", "Asia-Pacific"},
+        {"Lebanon",              "Lebanon",                   "LBN", "Middle East & Africa"},
+        {"West Indies",          "West Indies",               "",    "Americas"},
+        {"Bermuda",              "Bermuda",                   "BMU", "Americas"},
+        {"Nigeria",              "Nigeria",                   "NGA", "Middle East & Africa"},
+        {"Czech Republic",       "Czech Republic",            "CZE", "Europe"},
+        {"Saudi Arabia",         "Saudi Arabia",              "SAU", "Middle East & Africa"},
+        {"Unspecified",          "Unknown",                   "",    "Unknown"},
+        {"European Community",   "Unknown (EU, unallocated)", "",    "Europe"}
+    },
+    Table = Table.FromRows(Rows, {"CountryRaw", "Country", "CountryISO", "Region"}),
+    Typed = Table.TransformColumnTypes(Table, {
+        {"CountryRaw", type text}, {"Country", type text},
+        {"CountryISO", type text}, {"Region", type text}})
+in
+    Typed
+
+
+================================================================================
+2. Source_Raw             (staging - disable load)
+================================================================================
+DATA INTEGRATION (PDF: Data Integration - merge on Batch ID).
+The two sheets are stacked into one table, each row tagged with the sheet it
+came from. That tag is what makes the overlap in the next query provable.
+
+let
+    Source = Excel.Workbook(
+        File.Contents(SourceFolder & "\00_source\online_retail_II.xlsx"), null, true),
+
+    Sheet0910 = Table.PromoteHeaders(
+        Source{[Item = "Year 2009-2010", Kind = "Sheet"]}[Data], [PromoteAllScalars = true]),
+    Sheet1011 = Table.PromoteHeaders(
+        Source{[Item = "Year 2010-2011", Kind = "Sheet"]}[Data], [PromoteAllScalars = true]),
+
+    Tag0910 = Table.AddColumn(Sheet0910, "SourceSheet", each "Year 2009-2010", type text),
+    Tag1011 = Table.AddColumn(Sheet1011, "SourceSheet", each "Year 2010-2011", type text),
+
+    #"Data Integration - Append Both Sheets" = Table.Combine({Tag0910, Tag1011}),
+
+    #"Set Data Types" = Table.TransformColumnTypes(
+        #"Data Integration - Append Both Sheets", {
+            {"Invoice",     type text},        // identifier, NOT a number
+            {"StockCode",   type text},        // identifier, NOT a number
+            {"Description", type text},
+            {"Quantity",    Int64.Type},
+            {"InvoiceDate", type datetime},
+            {"Price",       type number},
+            {"Customer ID", type number},
+            {"Country",     type text}})
+in
+    #"Set Data Types"
+
+    -- Expected at this point: 1,067,371 rows
+
+
+================================================================================
+3. Fact_Sales             (the main cleaning pipeline)
+================================================================================
+Every Applied Step below is named after the PDF technique it applies. Click
+through them in the Query Editor to walk the marker through the syllabus.
+
+let
+    Source = Source_Raw,
+
+    // ---- DUPLICATE REMOVAL (PDF: Duplicate Removal) -------------------------
+    // Two things are removed at once here:
+    //   (a) the two sheets overlap 1-9 Dec 2010, so 22,202 rows appear twice
+    //   (b) 12,133 further rows are ordinary within-sheet repeats
+    // Table.Distinct over the eight business columns handles both. Python
+    // separates them for the audit table; the end state is identical.
+    #"Duplicate Removal - Exact Match" = Table.Distinct(Source,
+        {"Invoice", "StockCode", "Description", "Quantity",
+         "InvoiceDate", "Price", "Customer ID", "Country"}),
+
+    // ---- UNIT CONVERSION / FORMAT STANDARDISATION (PDF: Unit Conversion) ----
+    #"Unit Conversion - Trim And Case" = Table.TransformColumns(
+        #"Duplicate Removal - Exact Match", {
+            {"StockCode",   each Text.Upper(Text.Trim(_)), type text},
+            {"Description", each if _ = null then null
+                                 else Text.Proper(Text.Trim(Text.Clean(_))), type text},
+            {"Invoice",     each Text.Trim(_), type text}}),
+
+    #"Unit Conversion - Canonical Country" = Table.NestedJoin(
+        #"Unit Conversion - Trim And Case", {"Country"},
+        CountryLookup, {"CountryRaw"}, "cty", JoinKind.LeftOuter),
+    #"Expand Country" = Table.ExpandTableColumn(
+        #"Unit Conversion - Canonical Country", "cty",
+        {"Country", "CountryISO", "Region"},
+        {"CountryClean", "CountryISO", "Region"}),
+    #"Replace Country" = Table.RenameColumns(
+        Table.RemoveColumns(#"Expand Country", {"Country"}),
+        {{"CountryClean", "Country"}}),
+
+    // Integer surrogate key. -1 marks a transaction with no identified
+    // customer. A text key mixing numbers and the word UNKNOWN gets inferred
+    // as numeric on one side of the relationship and text on the other, which
+    // breaks the join silently.
+    #"Attribute Construction - Customer Key" = Table.AddColumn(
+        #"Replace Country", "CustomerKey",
+        each if [#"Customer ID"] = null then -1
+             else Number.RoundDown([#"Customer ID"]), Int64.Type),
+
+    // ---- DUPLICATE REMOVAL ON THE BUSINESS KEY -----------------------------
+    // 1,210 stock codes carry more than one Description (23298 is both
+    // "Bunting , Spotty" and "Spotty Bunting"), so an exact eight-column match
+    // misses a line repeated under a second spelling. Description is a product
+    // attribute, not part of what identifies a transaction, so it is excluded
+    // from the key.
+    #"Duplicate Removal - Business Key" = Table.Distinct(
+        #"Attribute Construction - Customer Key",
+        {"Invoice", "StockCode", "Quantity", "Price",
+         "InvoiceDate", "CustomerKey", "Country"}),
+
+    // ---- MISSING VALUES: MCAR / MAR / MNAR (PDF: Missing Value Types) -------
+    // Rows with no Description AND Price = 0 are removed. Missingness is fully
+    // predicted by observed fields (100% also lack a Customer ID, 100% are
+    // zero-priced), so this is MAR, not MCAR - and the rows carry no revenue.
+    // Rows missing ONLY the Customer ID are deliberately KEPT: they hold
+    // GBP 2.6m of real revenue. Deletion happens in Dim_Customer instead.
+    #"Missing Value Removal - MAR Zero Value" = Table.SelectRows(
+        #"Duplicate Removal - Business Key",
+        each not ([Description] = null and [Price] = 0)),
+
+    #"Missing Value Imputation - Placeholder" = Table.ReplaceValue(
+        #"Missing Value Removal - MAR Zero Value",
+        null, "Unknown Item", Replacer.ReplaceValue, {"Description"}),
+
+    #"Remove Test Records" = Table.SelectRows(
+        #"Missing Value Imputation - Placeholder",
+        each not List.Contains({"TEST001", "TEST002"}, [StockCode])),
+
+    // ---- ATTRIBUTE CONSTRUCTION (PDF: Attribute Construction) --------------
+    // The PDF derives Defect % = Defective / Produced x 100. Same idea here.
+    #"Attribute Construction - Revenue" = Table.AddColumn(
+        #"Remove Test Records", "Revenue",
+        each Number.Round([Quantity] * [Price], 2), type number),
+
+    #"Attribute Construction - Flags" = Table.AddColumn(
+        Table.AddColumn(
+            Table.AddColumn(#"Attribute Construction - Revenue", "IsCancelled",
+                each Text.StartsWith([Invoice], "C"), type logical),
+            "IsReturn", each [Quantity] < 0, type logical),
+        "HasCustomer", each [CustomerKey] <> -1, type logical),
+
+    #"Attribute Construction - Item Type" = Table.AddColumn(
+        #"Attribute Construction - Flags", "ItemType",
+        each let c = [StockCode] in
+            if List.Contains({"POST", "DOT", "C2", "C3"}, c) then "Postage & Carriage"
+            else if List.Contains({"M", "D", "B", "S", "BANK CHARGES", "AMAZONFEE",
+                                   "ADJUST", "ADJUST2", "CRUK", "PADS"}, c)
+                 then "Fee / Adjustment"
+            else if Text.StartsWith(c, "GIFT") then "Gift Voucher"
+            else if Text.StartsWith(c, "DCGS") then "Discount / Sample"
+            else if Value.Is(Value.FromText(Text.Start(c, 5)), type number)
+                 then "Product"
+            else "Other Non-Product", type text),
+
+    #"Attribute Construction - Is Product" = Table.AddColumn(
+        #"Attribute Construction - Item Type", "IsProduct",
+        each [ItemType] = "Product", type logical),
+
+    #"Attribute Construction - Transaction Type" = Table.AddColumn(
+        #"Attribute Construction - Is Product", "TransactionType",
+        each if [IsCancelled] then "Cancellation"
+             else if [IsReturn] then "Write-off / Return"
+             else if [Price] = 0 then "Zero-price (promo/adjustment)"
+             else "Sale", type text),
+
+    #"Attribute Construction - Hour" = Table.AddColumn(
+        #"Attribute Construction - Transaction Type", "Hour",
+        each Time.Hour(DateTime.Time([InvoiceDate])), Int64.Type),
+
+    // ---- OUTLIER DETECTION: Z-SCORE + IQR (PDF: Z-score Normalization) ------
+    // Flagged, never deleted. The 80,995-unit order and the GBP 38,970 Manual
+    // adjustment are real business events. A plain 1.5xIQR rule would discard
+    // about 11% of rows, which describes a skewed retail distribution rather
+    // than finding errors - so the test requires BOTH |z| > 3 AND a value
+    // beyond 3xIQR before a row is flagged.
+    Buffered = Table.Buffer(#"Attribute Construction - Hour"),
+    QtyList  = List.Buffer(Table.Column(Buffered, "Quantity")),
+    PrcList  = List.Buffer(Table.Column(Buffered, "Price")),
+    QtyMean  = List.Average(QtyList),
+    QtySD    = List.StandardDeviation(QtyList),
+    QtyQ1    = List.Percentile(QtyList, 0.25),
+    QtyQ3    = List.Percentile(QtyList, 0.75),
+    QtyLo    = QtyQ1 - 3 * (QtyQ3 - QtyQ1),
+    QtyHi    = QtyQ3 + 3 * (QtyQ3 - QtyQ1),
+    PrcMean  = List.Average(PrcList),
+    PrcSD    = List.StandardDeviation(PrcList),
+    PrcQ1    = List.Percentile(PrcList, 0.25),
+    PrcQ3    = List.Percentile(PrcList, 0.75),
+    PrcLo    = PrcQ1 - 3 * (PrcQ3 - PrcQ1),
+    PrcHi    = PrcQ3 + 3 * (PrcQ3 - PrcQ1),
+
+    #"Outlier Detection - Reason" = Table.AddColumn(Buffered, "Outlier_Reason",
+        each let
+                qOut = Number.Abs(([Quantity] - QtyMean) / QtySD) > 3
+                       and ([Quantity] < QtyLo or [Quantity] > QtyHi),
+                pOut = Number.Abs(([Price] - PrcMean) / PrcSD) > 3
+                       and ([Price] < PrcLo or [Price] > PrcHi)
+             in
+                if qOut and pOut then "Extreme Quantity + Extreme Price"
+                else if qOut then "Extreme Quantity"
+                else if pOut then "Extreme Price"
+                else "Within normal range", type text),
+
+    #"Outlier Detection - Flag" = Table.AddColumn(
+        #"Outlier Detection - Reason", "Is_Outlier",
+        each [Outlier_Reason] <> "Within normal range", type logical),
+
+    // ---- DIMENSIONALITY REDUCTION (PDF: Dimensionality Reduction) ----------
+    // Descriptive attributes move to dimension tables; the fact keeps keys,
+    // measures and flags only. Note Revenue = Quantity x Price is deliberate
+    // redundancy for reporting speed - never feed all three into one
+    // correlation or model.
+    #"Dimensionality Reduction - Select Fact Columns" = Table.SelectColumns(
+        #"Outlier Detection - Flag",
+        {"Invoice", "StockCode", "CustomerKey", "Country", "InvoiceDate", "Hour",
+         "Quantity", "Price", "Revenue", "IsCancelled", "IsReturn", "IsProduct",
+         "HasCustomer", "TransactionType", "Is_Outlier", "Outlier_Reason",
+         "SourceSheet"})
+in
+    #"Dimensionality Reduction - Select Fact Columns"
+
+    -- Expected: 1,028,743 rows, Revenue sum = 18,854,778.33
+
+
+================================================================================
+4. Dim_Product
+================================================================================
+One row per StockCode. Keyed on the code, never on Description, because 1,210
+codes carry more than one spelling of the same product name - grouping by
+Description would split one product across several rows.
+
+LOAD THIS FROM CSV (use the query 8 pattern against 02_clean\Dim_Product.csv,
+typing StockCode/Description/ItemType/PriceBand/ABC_Class as text, IsProduct as
+logical, and the rest as number). The Python version computes every column below
+in a single pass and is already validated.
+
+The M underneath documents the same logic. To run it, duplicate Fact_Sales,
+delete its final "Dimensionality Reduction - Select Fact Columns" step so
+Description survives, name the result Staging_Cleaned, and disable its load.
+
+let
+    Source = Staging_Cleaned,
+
+    Grouped = Table.Group(Source, {"StockCode"}, {
+        {"Description", each List.Mode([Description]), type text},
+        {"ItemType",    each List.First([ItemType]), type text},
+        {"IsProduct",   each List.First([IsProduct]), type logical},
+        {"AvgPrice",    each Number.Round(List.Average([Price]), 2), type number},
+        {"MinPrice",    each List.Min([Price]), type number},
+        {"MaxPrice",    each List.Max([Price]), type number},
+        {"UnitsSold",   each List.Sum([Quantity]), Int64.Type},
+        {"Revenue",     each Number.Round(List.Sum([Revenue]), 2), type number},
+        {"TimesSold",   each Table.RowCount(_), Int64.Type}}),
+
+    // DISCRETIZATION (PDF: Data Discretization) - continuous price into bands
+    #"Discretization - Price Band" = Table.AddColumn(Grouped, "PriceBand",
+        each if [AvgPrice] <= 1 then "Under GBP 1"
+             else if [AvgPrice] <= 3 then "GBP 1-3"
+             else if [AvgPrice] <= 10 then "GBP 3-10"
+             else "Over GBP 10", type text),
+
+    // ABC / Pareto classification on revenue
+    Sorted = Table.Sort(#"Discretization - Price Band", {{"Revenue", Order.Descending}}),
+    Indexed = Table.AddIndexColumn(Sorted, "Rank", 1, 1, Int64.Type),
+    TotalPos = List.Sum(List.Transform(Table.Column(Sorted, "Revenue"),
+                                       each if _ > 0 then _ else 0)),
+    RevList = List.Buffer(Table.Column(Sorted, "Revenue")),
+    #"Cumulative Revenue %" = Table.AddColumn(Indexed, "CumRevenuePct",
+        each Number.Round(
+            List.Sum(List.Transform(List.FirstN(RevList, [Rank]),
+                                    each if _ > 0 then _ else 0)) / TotalPos * 100, 3),
+        type number),
+    #"ABC Class" = Table.AddColumn(#"Cumulative Revenue %", "ABC_Class",
+        each if [CumRevenuePct] <= 80 then "A"
+             else if [CumRevenuePct] <= 95 then "B" else "C", type text)
+in
+    #"ABC Class"
+
+WARNING: the cumulative-revenue step above re-sums the list for every row, so it
+is O(n^2) and will crawl over 4,776 products. This is exactly why the shipped
+model loads Dim_Product from CSV. Do not run this version against the full
+catalogue expecting it to finish quickly.
+
+
+================================================================================
+5. Dim_Date
+================================================================================
+Mark this as the model's date table:
+    Table tools > Mark as date table > DateKey
+
+let
+    StartDate = #date(2009, 12, 1),
+    EndDate   = #date(2011, 12, 9),
+    DayCount  = Duration.Days(EndDate - StartDate) + 1,
+    Dates     = List.Dates(StartDate, DayCount, #duration(1, 0, 0, 0)),
+    ToTable   = Table.FromList(Dates, Splitter.SplitByNothing(), {"DateKey"}),
+    Typed     = Table.TransformColumnTypes(ToTable, {{"DateKey", type date}}),
+
+    Cols = Table.AddColumn(
+        Table.AddColumn(
+            Table.AddColumn(
+                Table.AddColumn(
+                    Table.AddColumn(
+                        Table.AddColumn(
+                            Table.AddColumn(
+                                Table.AddColumn(Typed, "Year",
+                                    each Date.Year([DateKey]), Int64.Type),
+                                "Quarter", each Date.QuarterOfYear([DateKey]), Int64.Type),
+                            "Month", each Date.Month([DateKey]), Int64.Type),
+                        "MonthName", each Date.ToText([DateKey], "MMM"), type text),
+                    "MonthYear", each Date.ToText([DateKey], "yyyy-MM"), type text),
+                "MonthYearLabel", each Date.ToText([DateKey], "MMM yyyy"), type text),
+            "Weekday", each Date.DayOfWeekName([DateKey]), type text),
+        "WeekdayNo", each Date.DayOfWeek([DateKey], Day.Monday), Int64.Type),
+
+    #"Generalization - Is Weekend" = Table.AddColumn(Cols, "IsWeekend",
+        each [WeekdayNo] >= 5, type logical),
+    #"Quarter Label" = Table.AddColumn(#"Generalization - Is Weekend", "QuarterLabel",
+        each "Q" & Text.From([Quarter]) & " " & Text.From([Year]), type text)
+in
+    #"Quarter Label"
+
+
+================================================================================
+6. Dim_Hour
+================================================================================
+GENERALIZATION (PDF: Data Generalization). The PDF turns ages into
+Young / Middle-aged / Senior; this turns the hour of day into named day parts.
+
+let
+    Hours = Table.FromList({0..23}, Splitter.SplitByNothing(), {"Hour"}),
+    Typed = Table.TransformColumnTypes(Hours, {{"Hour", Int64.Type}}),
+    Label = Table.AddColumn(Typed, "HourLabel",
+        each Text.PadStart(Text.From([Hour]), 2, "0") & ":00", type text),
+    #"Generalization - Day Part" = Table.AddColumn(Label, "DayPart",
+        each if [Hour] <= 11 then "Morning"
+             else if [Hour] <= 16 then "Afternoon"
+             else if [Hour] <= 20 then "Evening"
+             else "Night", type text)
+in
+    #"Generalization - Day Part"
+
+
+================================================================================
+7. Dim_Country
+================================================================================
+let
+    Source = CountryLookup,
+    Trimmed = Table.SelectColumns(Source, {"Country", "CountryISO", "Region"}),
+    Deduped = Table.Distinct(Trimmed, {"Country"})
+in
+    Deduped
+
+
+================================================================================
+8. CSV-BACKED QUERIES
+================================================================================
+These four load Python output. Dim_Customer, the aggregation cubes and the audit
+table are derived rather than cleaned, and reproducing quantile-based RFM
+scoring in M would be slow and hard to read. The Python source is in
+01_scripts/03_clean.py and every figure is validated by 04_validate.py.
+
+--- Dim_Customer ---------------------------------------------------------------
+let
+    Source = Csv.Document(
+        File.Contents(SourceFolder & "\02_clean\Dim_Customer.csv"),
+        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+    Typed = Table.TransformColumnTypes(Promoted, {
+        {"CustomerKey", Int64.Type}, {"Recency", Int64.Type},
+        {"Frequency", Int64.Type}, {"Monetary", type number},
+        {"FirstPurchase", type datetime}, {"LastPurchase", type datetime},
+        {"UnitsBought", Int64.Type}, {"LinesBought", Int64.Type},
+        {"TenureDays", Int64.Type}, {"AvgOrderValue", type number},
+        {"Recency_MinMax", type number}, {"Frequency_MinMax", type number},
+        {"Monetary_MinMax", type number}, {"Recency_Z", type number},
+        {"Frequency_Z", type number}, {"Monetary_Z", type number},
+        {"R_Score", Int64.Type}, {"F_Score", Int64.Type}, {"M_Score", Int64.Type},
+        {"RFM_Score", Int64.Type}, {"RFM_Sum", Int64.Type},
+        {"Segment", type text}, {"RecencyBand", type text}, {"ValueTier", type text}})
+in
+    Typed
+
+--- Dim_DataQuality ------------------------------------------------------------
+The audit trail. This is what makes the preprocessing visible on the dashboard.
+
+let
+    Source = Csv.Document(
+        File.Contents(SourceFolder & "\02_clean\Dim_DataQuality.csv"),
+        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+    Typed = Table.TransformColumnTypes(Promoted, {
+        {"Step", Int64.Type}, {"Technique", type text}, {"PDF_Section", type text},
+        {"Step_Type", type text}, {"Rows_Before", Int64.Type},
+        {"Rows_After", Int64.Type}, {"Rows_Removed", Int64.Type},
+        {"Pct_Removed", type number}, {"Metric_Note", type text},
+        {"Rationale", type text}})
+in
+    Typed
+
+--- Agg_Daily ------------------------------------------------------------------
+Carries the two smoothed series (PDF: Noise Reduction).
+
+let
+    Source = Csv.Document(
+        File.Contents(SourceFolder & "\02_clean\Agg_Daily.csv"),
+        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+    Typed = Table.TransformColumnTypes(Promoted, {
+        {"DateKey", type date}, {"Revenue", type number}, {"Orders", Int64.Type},
+        {"Units", Int64.Type}, {"Lines", Int64.Type}, {"Customers", Int64.Type},
+        {"Revenue_MA7", type number}, {"Revenue_ExpSmooth", type number}})
+in
+    Typed
+
+--- Agg_Histograms -------------------------------------------------------------
+HISTOGRAM REDUCTION (PDF: Histogram Reduction). 1,078,082 raw values stored as
+23 bin frequencies.
+
+let
+    Source = Csv.Document(
+        File.Contents(SourceFolder & "\02_clean\Agg_Histograms.csv"),
+        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+    Typed = Table.TransformColumnTypes(Promoted, {
+        {"Metric", type text}, {"Bin", type text},
+        {"BinOrder", Int64.Type}, {"Frequency", Int64.Type}})
+in
+    Typed
+
+
+================================================================================
+9. FAST PATH (optional)
+================================================================================
+If the Excel refresh is too slow to work with, point Fact_Sales at the Python
+output instead. Identical data, seconds instead of minutes - but the Applied
+Steps disappear, so use this only while designing visuals, and switch back to
+query 3 before submitting.
+
+let
+    Source = Parquet.Document(
+        File.Contents(SourceFolder & "\02_clean\Fact_Sales.parquet"))
+in
+    Source
+
+
+================================================================================
+10. MODEL RELATIONSHIPS
+================================================================================
+All single-direction, one-to-many, from the dimension to the fact.
+
+    Dim_Date[DateKey]           1 --> *  Fact_Sales[InvoiceDate]   (date part)
+    Dim_Customer[CustomerKey]   1 --> *  Fact_Sales[CustomerKey]
+    Dim_Product[StockCode]      1 --> *  Fact_Sales[StockCode]
+    Dim_Country[Country]        1 --> *  Fact_Sales[Country]
+    Dim_Hour[Hour]              1 --> *  Fact_Sales[Hour]
+
+    Dim_DataQuality   - no relationship (disconnected evidence table)
+    Agg_Histograms    - no relationship (disconnected)
+    Agg_Daily         - relate DateKey to Dim_Date[DateKey] if you want the
+                        smoothed series to respond to the date slicer
+
+Fact_Sales[InvoiceDate] is a datetime. Either add a calculated Date column
+    DateOnly = DATEVALUE(Fact_Sales[InvoiceDate])
+and relate on that, or set the relationship on the date portion. A datetime
+with a time component will NOT match a date-only key.

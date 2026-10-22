@@ -1,0 +1,156 @@
+table Dim_Date
+	lineageTag: 94bcb17f-ff26-4804-8f37-d5cae23b7a6a
+
+	column DateKey
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 28167005-5dbd-4d66-9ec8-d17ce618362d
+		summarizeBy: none
+		sourceColumn: DateKey
+
+	column Year
+		dataType: int64
+		lineageTag: 2cf40614-28f9-44d7-a157-54651605821f
+		summarizeBy: none
+		sourceColumn: Year
+
+	column Quarter
+		dataType: int64
+		lineageTag: 40f28396-bf50-4314-a31f-d041f7fb4394
+		summarizeBy: none
+		sourceColumn: Quarter
+
+	column QuarterLabel
+		dataType: string
+		lineageTag: 2d30026e-acaa-4a13-99e9-223c3b728a54
+		summarizeBy: none
+		sourceColumn: QuarterLabel
+		sortByColumn: MonthYear
+
+	column Month
+		dataType: int64
+		lineageTag: 5e45352f-a22e-4d2f-9273-dbd2d77dc2b6
+		summarizeBy: none
+		sourceColumn: Month
+
+	column MonthName
+		dataType: string
+		lineageTag: 50256a3d-2e7e-4f5c-9660-3081553d1bc2
+		summarizeBy: none
+		sourceColumn: MonthName
+		sortByColumn: Month
+
+	column MonthYear
+		dataType: string
+		lineageTag: e2956eea-ceb4-4e34-a2c1-0893da40b4f1
+		summarizeBy: none
+		sourceColumn: MonthYear
+
+	column MonthYearLabel
+		dataType: string
+		lineageTag: 31b88c64-71ad-4726-9890-71cec15a3609
+		summarizeBy: none
+		sourceColumn: MonthYearLabel
+		sortByColumn: MonthYear
+
+	column Weekday
+		dataType: string
+		lineageTag: 6729feb9-b68b-4997-ac26-eab4f965049e
+		summarizeBy: none
+		sourceColumn: Weekday
+		sortByColumn: WeekdayNo
+
+	column WeekdayNo
+		dataType: int64
+		lineageTag: 3e20672d-0aa3-4e95-91db-21cb1ce48c89
+		summarizeBy: none
+		sourceColumn: WeekdayNo
+
+	column IsWeekend
+		dataType: boolean
+		lineageTag: f53f8762-00ad-43a3-8b7a-31e3450839a8
+		summarizeBy: none
+		sourceColumn: IsWeekend
+
+	column WeekOfYear
+		dataType: int64
+		lineageTag: 5ad65dbb-8fbb-4747-be67-5d5c4433c41c
+		summarizeBy: none
+		sourceColumn: WeekOfYear
+
+	column DayOfYear
+		dataType: int64
+		lineageTag: c9f60230-a721-4e63-9dd0-11a8f268c8f9
+		summarizeBy: none
+		sourceColumn: DayOfYear
+
+	partition Dim_Date = m
+		mode: import
+		source =
+				let
+				    // ================================================================
+				    // Dim_Date - generated, not loaded. One row per calendar day across
+				    // the fact's span, so time intelligence has an unbroken date table.
+				    // The span below is the min and max InvoiceDate of the cleaned fact,
+				    // reported by 03_clean.py and re-checked by 04_validate.py.
+				    // ================================================================
+				
+				    StartDate = #date(2009, 12, 1),
+				    EndDate = #date(2011, 12, 9),
+				    DayCount = Duration.Days(EndDate - StartDate) + 1,
+				
+				    #"Generate Calendar" = Table.FromList(
+				        List.Dates(StartDate, DayCount, #duration(1, 0, 0, 0)),
+				        Splitter.SplitByNothing(), {"DateKey"}),
+				
+				    // Held as a date while the parts are derived - Date.ToText refuses a
+				    // datetime - then cast to datetime at the end to match the fact's key.
+				    #"Set Data Types" = Table.TransformColumnTypes(
+				        #"Generate Calendar", {{"DateKey", type date}}),
+				
+				    #"Derive Year" = Table.AddColumn(
+				        #"Set Data Types", "Year", each Date.Year([DateKey]), Int64.Type),
+				    #"Derive Quarter" = Table.AddColumn(
+				        #"Derive Year", "Quarter", each Date.QuarterOfYear([DateKey]), Int64.Type),
+				    #"Derive Quarter Label" = Table.AddColumn(
+				        #"Derive Quarter", "QuarterLabel",
+				        each "Q" & Text.From([Quarter]) & " " & Text.From([Year]), type text),
+				    #"Derive Month" = Table.AddColumn(
+				        #"Derive Quarter Label", "Month", each Date.Month([DateKey]), Int64.Type),
+				    #"Derive Month Name" = Table.AddColumn(
+				        #"Derive Month", "MonthName",
+				        each Date.ToText([DateKey], "MMM", "en-GB"), type text),
+				    #"Derive Month Year" = Table.AddColumn(
+				        #"Derive Month Name", "MonthYear",
+				        each Date.ToText([DateKey], "yyyy-MM", "en-GB"), type text),
+				    #"Derive Month Year Label" = Table.AddColumn(
+				        #"Derive Month Year", "MonthYearLabel",
+				        each Date.ToText([DateKey], "MMM yyyy", "en-GB"), type text),
+				    #"Derive Weekday" = Table.AddColumn(
+				        #"Derive Month Year Label", "Weekday",
+				        each Date.DayOfWeekName([DateKey], "en-GB"), type text),
+				    #"Derive Weekday Number" = Table.AddColumn(
+				        #"Derive Weekday", "WeekdayNo",
+				        each Date.DayOfWeek([DateKey], Day.Monday), Int64.Type),
+				    #"Flag Weekend" = Table.AddColumn(
+				        #"Derive Weekday Number", "IsWeekend",
+				        each [WeekdayNo] >= 5, type logical),
+				
+				    // ISO 8601 week: the week owning the Thursday of that Monday-week. This
+				    // reproduces pandas .isocalendar().week, which is what 03_clean.py used.
+				    #"Derive ISO Week" = Table.AddColumn(
+				        #"Flag Weekend", "WeekOfYear",
+				        each let Thu = Date.AddDays(Date.StartOfWeek([DateKey], Day.Monday), 3)
+				             in Number.RoundDown(
+				                 Duration.Days(Thu - Date.StartOfYear(Thu)) / 7) + 1,
+				        Int64.Type),
+				
+				    #"Derive Day Of Year" = Table.AddColumn(
+				        #"Derive ISO Week", "DayOfYear",
+				        each Date.DayOfYear([DateKey]), Int64.Type),
+				
+				    #"Set Date Key Type" = Table.TransformColumnTypes(
+				        #"Derive Day Of Year", {{"DateKey", type datetime}})
+				in
+				    #"Set Date Key Type"
+

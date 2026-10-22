@@ -1,0 +1,7 @@
+expression SourceFolder = "D:\Semester 3\Business Analytics\Project" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 3169a095-bf35-4e40-9243-f4caafcd70f4
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+

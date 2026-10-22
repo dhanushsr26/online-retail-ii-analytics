@@ -1,0 +1,20 @@
+relationship 0cb4d440-ef5c-4c75-9877-8b636d876168
+	fromColumn: Fact_Sales.DateOnly
+	toColumn: Dim_Date.DateKey
+
+relationship 331878c5-c94e-4b0a-aa37-8cba99c02487
+	fromColumn: Fact_Sales.CustomerKey
+	toColumn: Dim_Customer.CustomerKey
+
+relationship d8f0a087-e83b-4c9f-a5dc-369db1dcd0cf
+	fromColumn: Fact_Sales.StockCode
+	toColumn: Dim_Product.StockCode
+
+relationship 90e19d9b-1746-43d4-b9ba-100a0f8fe807
+	fromColumn: Fact_Sales.Country
+	toColumn: Dim_Country.Country
+
+relationship ce4fca05-485a-4e35-8e66-54f42b1703b9
+	fromColumn: Fact_Sales.Hour
+	toColumn: Dim_Hour.Hour
+

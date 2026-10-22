@@ -1,0 +1,105 @@
+table Dim_Product
+	lineageTag: 0b70a67d-cdb0-4a9e-b1a4-c7d7ee3ef225
+
+	column StockCode
+		dataType: string
+		lineageTag: 354fd617-c6b2-4ba9-b265-d990a1aa561b
+		summarizeBy: none
+		sourceColumn: StockCode
+
+	column Description
+		dataType: string
+		lineageTag: e2f43509-7e91-4659-afba-6981e017619e
+		summarizeBy: none
+		sourceColumn: Description
+
+	column ItemType
+		dataType: string
+		lineageTag: 55e7512b-78d4-4dbd-8268-77649801ee7c
+		summarizeBy: none
+		sourceColumn: ItemType
+
+	column IsProduct
+		dataType: boolean
+		lineageTag: 80d002fe-8f02-472e-8d85-cf17f25e81a9
+		summarizeBy: none
+		sourceColumn: IsProduct
+
+	column AvgPrice
+		dataType: double
+		formatString: \£#,0.00;(\£#,0.00);\£#,0.00
+		lineageTag: 49a95491-19d1-451e-9017-6171a873045a
+		summarizeBy: none
+		sourceColumn: AvgPrice
+
+	column MinPrice
+		dataType: double
+		lineageTag: 4ee9f0a5-4ada-49bb-af5d-caa937ad7f99
+		summarizeBy: none
+		sourceColumn: MinPrice
+
+	column MaxPrice
+		dataType: double
+		lineageTag: 81347966-1f5a-4e2d-abbc-a331992c900a
+		summarizeBy: none
+		sourceColumn: MaxPrice
+
+	column UnitsSold
+		dataType: int64
+		lineageTag: 6d17c5e8-6a93-4e9a-8778-1fc8bfa412d8
+		summarizeBy: sum
+		sourceColumn: UnitsSold
+
+	column Revenue
+		dataType: double
+		formatString: \£#,0.00;(\£#,0.00);\£#,0.00
+		lineageTag: 65023267-2d76-450c-aff5-7e2d7034db4d
+		summarizeBy: sum
+		sourceColumn: Revenue
+
+	column TimesSold
+		dataType: int64
+		lineageTag: 00b2a472-2dfa-4fea-a855-3386521dea17
+		summarizeBy: sum
+		sourceColumn: TimesSold
+
+	column PriceBand
+		dataType: string
+		lineageTag: e505c94b-1cd2-4699-ab9e-24cba97d1ccf
+		summarizeBy: none
+		sourceColumn: PriceBand
+
+	column CumRevenuePct
+		dataType: double
+		lineageTag: d15455ec-7c79-4d2b-bbc0-9fc457aee288
+		summarizeBy: none
+		sourceColumn: CumRevenuePct
+
+	column ABC_Class
+		dataType: string
+		lineageTag: 6268968a-79f8-4c26-8f49-44b562bf298d
+		summarizeBy: none
+		sourceColumn: ABC_Class
+
+	partition Dim_Product = m
+		mode: import
+		source =
+				let
+				    // ================================================================
+				    // Dim_Product - one row per stock code, aggregated from the cleaned fact.
+				    // Derived by 01_scripts/03_clean.py in the same cleaning run that
+				    // produces Fact_Sales, then written out as CSV. Techniques applied
+				    // upstream, per BA-6 Preprocessing Techniques.pdf:
+				    //   - Item type classification - product / postage / fee / adjustment
+				    //   - Price banding - discretization of average unit price
+				    //   - ABC classification - cumulative revenue share, Pareto cut-offs
+				    // Regenerate with:  python 01_scripts/03_clean.py
+				    // Verify with:      python 01_scripts/04_validate.py
+				    // ================================================================
+				
+				    Source = Csv.Document(File.Contents(SourceFolder & "\02_clean\Dim_Product.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    #"Set Data Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"StockCode", type text}, {"Description", type text}, {"ItemType", type text}, {"IsProduct", type logical}, {"AvgPrice", type number}, {"MinPrice", type number}, {"MaxPrice", type number}, {"UnitsSold", Int64.Type}, {"Revenue", type number}, {"TimesSold", Int64.Type}, {"PriceBand", type text}, {"CumRevenuePct", type number}, {"ABC_Class", type text}})
+				in
+				    #"Set Data Types"
+
